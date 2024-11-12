@@ -35,8 +35,8 @@ class UserCreate(BaseModel):
     user_password: str
     user_type: UserType = UserType.user
     phone_no: str
-    company_name:str
-    industry: str
+    company_name: Optional[str] = None
+    industry:  Optional[str] = None
 
     class Config:
         from_attributes = True

@@ -3,14 +3,13 @@ from database import Base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-class Question(Base):
-    __tablename__ = "question1"
+class S_Question(Base):
+    __tablename__ = "s_question1"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    resume_id = Column(Integer, ForeignKey('resumes.id'))
+    resume_id = Column(Integer, ForeignKey('resumes_upload.id'))
     candidate_name=Column(String(250))
     candidate_email=Column(String(250))
-    resume_selection_status=Column(String(250))
     Qustion1 = Column (Text)
     Qustion2 = Column (Text)
     Qustion3 = Column (Text)
@@ -20,7 +19,7 @@ class Question(Base):
     created_on = Column(DateTime, default=func.now())
     updated_on = Column(TIMESTAMP, server_default=func.now(), onupdate=func.current_timestamp())
 
-    resume = relationship("Resume", back_populates="question")
+    resume = relationship("Resume_upload", back_populates="question")
     
     
 def generate_gemini_prompt_Question(job_description: str) -> str:

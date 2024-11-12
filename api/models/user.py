@@ -24,8 +24,8 @@ class AI_Interviewer(Base):
     user_name = Column(String(255))
     user_email = Column(String(255), unique=True)
     user_password = Column(String(255))
-    company_name= Column(String(250))
-    industry= Column(String(250))
+    company_name= Column(String(250), default=None)
+    industry= Column(String(250),default=None)
     user_type = Column(String(100))
     phone_no = Column(BIGINT)
     created_on = Column(DateTime, default=func.now())
@@ -40,6 +40,10 @@ class AI_Interviewer(Base):
     company = relationship("Companies", back_populates="user")
 
     job_descriptions = relationship("Job_Descriptions", back_populates="user")
+
+    s_resumes_upload = relationship("Resume_upload", back_populates="user")
+
+    resume_analysis = relationship("Resume_Analysis", back_populates="user")
 
     # #######################################################################################################################
     @staticmethod
@@ -68,8 +72,22 @@ class AI_Interviewer(Base):
 
             if bcrypt.checkpw(credential.user_password.encode('utf-8'), user.user_password.encode('utf-8')):
                 token, exp = signJWT(user.user_id, user.user_type)
-                #if user.user_type == "user" or user.user_type == "student":
-                response = {
+                if user.user_type == "HR" or user.user_type == "admin":
+                    response = {
+                            'token': token,
+                            'exp' : exp,
+                            'user_id': user.user_id,
+                            'user_name': user.user_name,
+                            'user_email': user.user_email,
+                            'user_type': user.user_type,
+                            'created_on': user.created_on,
+                            'phone_no': user.phone_no,
+                            'company_name': user.company_name,
+                            'industry': user.industry,
+                            
+                        }
+                else:
+                    response = {
                         'token': token,
                         'exp' : exp,
                         'user_id': user.user_id,
@@ -78,9 +96,7 @@ class AI_Interviewer(Base):
                         'user_type': user.user_type,
                         'created_on': user.created_on,
                         'phone_no': user.phone_no,
-                        'company_name': user.company_name,
-                        'industry': user.industry,
-                        
+                           
                     }
 
                 return response

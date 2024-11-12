@@ -4,22 +4,20 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 
-class Resume(Base):
-    __tablename__ = "resumes"
+class Resume_upload(Base):
+    __tablename__ = "resumes_upload"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    company_id = Column(Integer, ForeignKey('companies.id'))
     user_id = Column(Integer, ForeignKey('users.user_id'))
-    candidate_email=Column(String(255))
     file_path = Column(String(255))
     resume_extract_data=Column(JSON)
     result = Column(JSON) 
     uploaded_at = Column(DateTime, default=func.now())
 
-    user = relationship("AI_Interviewer", back_populates="resume")
-    company = relationship("Companies", back_populates="resume")
-    resume_analysis = relationship("Resume_Analysis", back_populates="resume")
-    question = relationship("Question", back_populates="resume")
+    user = relationship("AI_Interviewer", back_populates="s_resumes_upload")
+    s_resume_analysis = relationship("S_Resume_Analysis", back_populates="s_resumes_upload")
+    question = relationship("S_Question", back_populates="resume")
+    
     
 
 

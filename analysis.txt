@@ -1,0 +1,103 @@
+{
+    "transcriptions": {
+        "question_1": "Hi. My name is Dev Chandan, and I am a tech engineer from Anna University. Uh, I only have studied artificial intelligence, machine learning, deep learning, and I really love to work in the fields of natural language processing, generative AI, and computer vision. I also have few hobbies like reading and uh swimming.",
+        "question_2": "In the field of artificial intelligence, my strengths are um working with machine learning algorithms, deep learning algorithms, and generative AI. I feel uh developing a new algorithms and uh especially using them for industry use cases is something I really love to do. Research is also my forte, and I have uh four research papers on my name.",
+        "question_3": "I think my biggest weakness is to delegate work. Um, for now I have not come across a point where I have been able to delegate work and be able to get done with a large amount of work efficiently. But, this is something I'm definitely working on, and I would like to work on this and contribute effectively.",
+        "question_4": "In the next five years, I see this company might be AI through and I feel uh since it's at the correct time that we are starting up as an artificial intelligence based company, there be uh with the growth of AI it can grow a lot, and I feel that I want to stick here and I want to uh lead the future team of AI developers in this company.",
+        "question_5": "Uh, I think that uh this job role is really exciting to me. I have worked with artificial intelligence for a long time but I really feel that the job description given here actually aligns with the skills that I've progressed. I feel I can contribute effectively to the growth of the company as well as my personal career growth will definitely happen."
+    },
+    "overall_speech_content_analysis": {
+        "relevance": {
+            "score": 9,
+            "description": "The candidate provides relevant answers to each question, demonstrating an understanding of the interview process and the expectations for the role."
+        },
+        "clarity": {
+            "score": 7,
+            "description": "While generally clear, there are a few instances where the candidate's speech is slightly rushed or mumbled, particularly in sections where he's listing his skills or hobbies. For example, 'I only have studied artificial intelligence, machine learning, deep learning' could be more clearly articulated."
+        },
+        "coherence": {
+            "score": 8,
+            "description": "The candidate's responses flow logically and demonstrate a clear train of thought. However, some transitions between points could be smoother.  For example, when discussing his weakness in delegation, a sentence linking it back to his overall goals would make the answer more cohesive."
+        },
+        "completeness": {
+            "score": 8,
+            "description": "The candidate covers most key points relevant to each question. While he offers detailed explanations about his strengths and passions, he could provide slightly more depth when discussing his weaknesses and how he's addressing them.  Additionally,  his vision for the future could be more specific in terms of his role and contributions to the company's AI development."
+        },
+        "per_question_feedback": {
+            "question_1": {
+                "score": 8,
+                "feedback": "The candidate provides a good introduction, highlighting his technical background, skills, and interests. He could be more concise with the list of skills and hobbies to avoid losing the interviewer's attention."
+            },
+            "question_2": {
+                "score": 9,
+                "feedback": "This response is strong, demonstrating technical expertise and passion for AI.  Mentioning specific examples of projects or research would strengthen the response further."
+            },
+            "question_3": {
+                "score": 7,
+                "feedback": "The candidate acknowledges a weakness and attempts to address it, which is positive. He could be more specific about the actions he's taking to improve his delegation skills.  A concrete example of a situation where he learned from a delegation experience would be impactful."
+            },
+            "question_4": {
+                "score": 7,
+                "feedback": "The candidate has a positive vision for the company's future. His response would benefit from more specific details about his aspirations within the AI team, such as a leadership role or a particular AI application he wants to work on."
+            },
+            "question_5": {
+                "score": 8,
+                "feedback": "This response demonstrates alignment with the job requirements and a strong desire for the role.  Highlighting a specific project or initiative mentioned in the job description that excites him would enhance the response."
+            }
+        }
+    },
+    "overall_non_verbal_communication": {
+        "facial_expressions": {
+            "description": "The candidate uses generally appropriate facial expressions, displaying a mix of smiles, nods, and thoughtful expressions. They seem genuine and engaged with the content of his speech.",
+            "score": 8
+        },
+        "eye_contact": {
+            "score": 7,
+            "description": "The candidate maintains good eye contact for the majority of the interview, but there are occasional moments where he looks down or away from the camera, particularly when thinking about his answers."
+        },
+        "body_language": {
+            "description": "The candidate appears relaxed and confident in his posture and gestures.  He sits upright with a slight lean forward,  indicating engagement.  He uses minimal hand gestures, which are appropriate for the context."
+            "score": 8
+        }
+    },
+    "overall_emotional_analysis": {
+        "primary_emotions": [
+            "enthusiasm",
+            "confidence",
+            "passion"
+        ],
+        "emotional_consistency": {
+            "score": 9,
+            "description": "The candidate's emotions are generally aligned with the content of his answers, displaying genuine enthusiasm for AI, confidence in his abilities, and passion for his work."
+        }
+    },
+    "overall_audio_analysis": {
+        "audio_quality": {
+            "score": 8,
+            "description": "The audio quality is good, with a clear voice and minimal background noise.  However,  the audio level could be slightly louder for optimal clarity."
+        },
+        "background_noise_impact": {
+            "score": 2,
+            "description": "There is a faint sound of air conditioning in the background, but it is not distracting and does not affect the clarity of the answers."
+        },
+        "tone": {
+            "score": 8,
+            "description": "The candidate's tone is friendly, engaging, and enthusiastic, appropriate for the interview setting."
+        },
+        "confidence": {
+            "score": 8,
+            "description": "The candidate's tone, pace, and speech patterns project confidence, particularly when discussing his skills and interests in AI."
+        },
+        "speech_pace": {
+            "score": 7,
+            "description": "The candidate speaks at a generally good pace, but there are moments where he rushes through his answers, which could impact clarity. He should focus on speaking more slowly and deliberately to ensure that every word is understood."
+        }
+    },
+    "overall_performance": {
+        "overall_score": 8,
+        "summary": {
+            "strengths": "The candidate demonstrates strong technical expertise, passion for AI, and a clear vision for his future career. He presents himself as enthusiastic and confident, with good non-verbal communication skills. ",
+            "areas_for_improvement": "The candidate could improve by focusing on speaking more clearly and deliberately.  He should also strive to provide more concrete examples and details in his answers, especially when discussing his weaknesses and future aspirations.  Additionally,  he could practice maintaining consistent eye contact throughout the interview."
+        }
+    }
+}
