@@ -27,7 +27,6 @@ import logging
 import re
 from sqlalchemy.orm import Session, joinedload
 from dotenv import load_dotenv
-from gtts import gTTS
 
 
 
@@ -192,26 +191,6 @@ def concatenate_videos(video_files, output_file):
 #     except Exception as e:
 #         raise HTTPException(status_code=500, detail=f"Error saving file: {str(e)}") 
 
-# Function to convert text to speech
-def text_to_speech(questions, email):
-    # Define a path to save the audio files
-    audio_dir = os.path.join("static", "audio", email).replace("\\", "/")
-    os.makedirs(audio_dir, exist_ok=True)
-    
-    audio_paths = {}
-    for key, question in questions.items():
-        # Generate TTS for each question
-        tts = gTTS(text=question, lang='en')
-        
-        # Define a unique filename for each question
-        audio_file_path = os.path.join(audio_dir, f"{key}.mp3")
-        tts.save(audio_file_path)
-        
-        # Store the file path for reference
-        audio_paths[key] = audio_file_path
-
-    return audio_paths
-
 @router.post("/analyze")
 async def analyze_video(
     email: str = Form(...),
@@ -269,8 +248,6 @@ async def analyze_video(
             'question4': question_db[0].Qustion4,
             'question5': question_db[0].Qustion5
         }
-
-        audio_paths = text_to_speech(questions, email)
 
         dynamic_question = generate_gemini_prompt_for_report_generate(**questions)
 
@@ -369,8 +346,7 @@ async def analyze_video(
             "message": "Analysis complete",
             "report_path": pdf_file_path,
             "json_path": json_output_path,
-            "questions": questions ,
-            "audio_paths": audio_paths  
+            "questions": questions 
         }
         
     except HTTPException as he:
