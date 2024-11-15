@@ -342,7 +342,7 @@ async def analyze_video(
         
         logger.info(f"Processing video analysis for email: {email}")
 
-        # Save uploaded files
+        
         resume_url = save_upload_resume(resume)
         video_url = save_upload_file_video(video)
         logger.info(f"Video saved at: {video_url}")
