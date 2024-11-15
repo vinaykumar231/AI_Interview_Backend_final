@@ -362,7 +362,7 @@ async def send_resume_selection_email(
              <p>Congratulations! Your resume for the position of <strong>{resume_analysis.job_title}</strong> at <strong>{resume_analysis.user.company_name}</strong> has been selected for the next round of the interview process. 
              </p>
              <p>Please click on the link below to schedule your interview:</p>
-            <a href="http://localhost:3000/candidate_Interview">Interview link</a>
+            <a href="https://ai-interviewer-theta.vercel.app/candidate_interview">Interview link</a>
             <br>
             <p><strong>Disclaimer:</strong> This email is confidential. If you are not the intended recipient, please let the sender know and delete this email.</p>
             <br>

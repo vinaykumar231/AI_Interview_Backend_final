@@ -169,16 +169,16 @@ def generate_gemini_prompt_for_report_generate(
         }},
         "overall_non_verbal_communication": {{
             "facial_expressions": {{
-                "description": "",
-                "score": 0
+                "score": 0,
+                "description": ""
             }},
             "eye_contact": {{
                 "score": 0,
                 "description": ""
             }},
             "body_language": {{
-                "description": "",
-                "score": 0
+                "score": 0,
+                "description": ""
             }}
         }},
         "overall_emotional_analysis": {{
@@ -219,7 +219,9 @@ def generate_gemini_prompt_for_report_generate(
         }}
     }}
 
-    Please ensure that the JSON output is complete and valid, with all required fields filled according to the structure provided.
+    Please analyze the video thoroughly and provide detailed feedback in the exact JSON format specified above.
+    Ensure all scores are between 1 and 10, and descriptions are detailed and specific to the candidate's performance.
+    The JSON response should be properly formatted and escapable.  Please ensure that the JSON output is complete and valid, with all required fields filled according to the structure provided.
     """
     
     return prompt

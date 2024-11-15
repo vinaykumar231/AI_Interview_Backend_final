@@ -21,13 +21,13 @@ from sqlalchemy.orm import Session
 from database import get_db
 from ..models.report import Report,save_upload_resume,generate_gemini_prompt_for_report_generate
 from ..models.video import Video
-from typing import Optional
+from typing import Dict, Optional
 from ..models.question import Question
 import logging
 import re
 from sqlalchemy.orm import Session, joinedload
 from dotenv import load_dotenv
-
+from google.ai.generativelanguage_v1beta.types import content
 
 
 
@@ -191,6 +191,139 @@ def concatenate_videos(video_files, output_file):
 #     except Exception as e:
 #         raise HTTPException(status_code=500, detail=f"Error saving file: {str(e)}") 
 
+
+def configure_gemini_model():
+    """Configure Gemini model with response schema"""
+    def create_score_description_schema():
+        return content.Schema(
+            type=content.Type.OBJECT,
+            properties={
+                "score": content.Schema(type=content.Type.INTEGER),
+                "description": content.Schema(type=content.Type.STRING)
+            },
+            required=["score", "description"]
+        )
+
+    def create_response_schema():
+        score_schema = create_score_description_schema()
+        
+        return content.Schema(
+            type=content.Type.OBJECT,
+            properties={
+                "questions": content.Schema(
+                    type=content.Type.OBJECT,
+                    properties={f"question_{i}": content.Schema(type=content.Type.STRING) for i in range(1, 6)},
+                    required=[f"question_{i}" for i in range(1, 6)]
+                ),
+                "transcriptions": content.Schema(
+                    type=content.Type.OBJECT,
+                    properties={f"question_{i}": content.Schema(type=content.Type.STRING) for i in range(1, 6)},
+                    required=[f"question_{i}" for i in range(1, 6)]
+                ),
+                "overall_speech_content_analysis": content.Schema(
+                    type=content.Type.OBJECT,
+                    properties={
+                        "relevance": score_schema,
+                        "clarity": score_schema,
+                        "coherence": score_schema,
+                        "completeness": score_schema,
+                        "per_question_feedback": content.Schema(
+                            type=content.Type.OBJECT,
+                            properties={
+                                f"question_{i}": content.Schema(
+                                    type=content.Type.OBJECT,
+                                    properties={
+                                        "score": content.Schema(type=content.Type.INTEGER),
+                                        "feedback": content.Schema(type=content.Type.STRING)
+                                    },
+                                    required=["score", "feedback"]
+                                ) for i in range(1, 6)
+                            },
+                            required=[f"question_{i}" for i in range(1, 6)]
+                        )
+                    },
+                    required=["relevance", "clarity", "coherence", "completeness", "per_question_feedback"]
+                ),
+                "overall_non_verbal_communication": content.Schema(
+                    type=content.Type.OBJECT,
+                    properties={
+                        "facial_expressions": score_schema,
+                        "eye_contact": score_schema,
+                        "body_language": score_schema
+                    },
+                    required=["facial_expressions", "eye_contact", "body_language"]
+                ),
+                "overall_emotional_analysis": content.Schema(
+                    type=content.Type.OBJECT,
+                    properties={
+                        "primary_emotions": content.Schema(
+                            type=content.Type.ARRAY,
+                            items=content.Schema(type=content.Type.STRING)
+                        ),
+                        "emotional_consistency": score_schema
+                    },
+                    required=["primary_emotions", "emotional_consistency"]
+                ),
+                "overall_audio_analysis": content.Schema(
+                    type=content.Type.OBJECT,
+                    properties={
+                        "audio_quality": score_schema,
+                        "background_noise_impact": score_schema,
+                        "tone": score_schema,
+                        "confidence": score_schema,
+                        "speech_pace": score_schema
+                    },
+                    required=["audio_quality", "background_noise_impact", "tone", "confidence", "speech_pace"]
+                ),
+                "overall_performance": content.Schema(
+                    type=content.Type.OBJECT,
+                    properties={
+                        "overall_score": content.Schema(type=content.Type.NUMBER),
+                        "summary": content.Schema(
+                            type=content.Type.OBJECT,
+                            properties={
+                                "strengths": content.Schema(type=content.Type.STRING),
+                                "areas_for_improvement": content.Schema(type=content.Type.STRING)
+                            },
+                            required=["strengths", "areas_for_improvement"]
+                        )
+                    },
+                    required=["overall_score", "summary"]
+                )
+            }
+        )
+
+    return {
+        "temperature": 1,
+        "top_p": 0.95,
+        "top_k": 40,
+        "max_output_tokens": 8192,
+        "response_schema": create_response_schema(),
+        "response_mime_type": "application/json"
+    }
+
+def generate_gemini_prompt_for_report_generate(questions: Dict[str, str]) -> str:
+    """Generate the prompt for Gemini API"""
+    return f"""Please evaluate the provided interview video where the interviewee is answering the following questions:
+
+1. {questions['question1']}
+2. {questions['question2']}
+3. {questions['question3']}
+4. {questions['question4']}
+5. {questions['question5']}
+
+Provide a detailed evaluation following the structured format for HR managers' PDF report generation, covering:
+1. Transcription of responses
+2. Speech content analysis(Score out of 100)
+3. Non-verbal communication(Score out of 100)
+4. Emotional analysis(Score out of 100)
+5. Audio analysis(Score out of 100)
+6. Overall performance(Score out of 100)
+
+The response must be in valid JSON format following the specified schema."""
+
+
+
 @router.post("/analyze")
 async def analyze_video(
     email: str = Form(...),
@@ -202,26 +335,25 @@ async def analyze_video(
     resume_url = None
 
     try:
-
-        hr_db=db.query(Resume_Analysis).filter(Resume_Analysis.candidate_email==email).first()
+        # Verify HR exists
+        hr_db = db.query(Resume_Analysis).filter(Resume_Analysis.candidate_email == email).first()
         if not hr_db:
-            raise HTTPException(status_code=404, detail="hr not found")
+            raise HTTPException(status_code=404, detail="HR not found")
         
         logger.info(f"Processing video analysis for email: {email}")
 
         # Save uploaded files
         resume_url = save_upload_resume(resume)
         video_url = save_upload_file_video(video)
-        print('video',video_url)
+        logger.info(f"Video saved at: {video_url}")
         
         # Upload to Gemini API
         logger.info("Uploading video to Gemini API")
         video_file = genai.upload_file(video_url)
         
-        # Wait for video processing with timeout
+        # Wait for video processing
         max_retries = 30
         retry_count = 0
-
         while video_file.state.name == "PROCESSING" and retry_count < max_retries:
             time.sleep(10)
             video_file = genai.get_file(video_file.name)
@@ -237,7 +369,6 @@ async def analyze_video(
         # Get questions from database
         logger.info("Retrieving questions from database")
         question_db = db.query(Question).filter(Question.candidate_email == email).all()
-
         if not question_db:
             raise HTTPException(status_code=404, detail="No questions found for the given email.")
 
@@ -249,14 +380,20 @@ async def analyze_video(
             'question5': question_db[0].Qustion5
         }
 
-        dynamic_question = generate_gemini_prompt_for_report_generate(**questions)
-
-        # Generate content with error handling
+        # Configure Gemini model with schema
+        generation_config = configure_gemini_model()
+        
+        # Create model and generate content
         logger.info("Generating content with Gemini API")
         try:
-            model = genai.GenerativeModel(model_name="models/gemini-1.5-flash")
+            model = genai.GenerativeModel(
+                model_name="models/gemini-1.5-flash",
+                generation_config=generation_config
+            )
+            
+            prompt = generate_gemini_prompt_for_report_generate(questions)
             response = model.generate_content(
-                [video_file, dynamic_question],
+                [video_file, prompt],
                 request_options={"timeout": 600}
             )
         except Exception as e:
@@ -269,51 +406,39 @@ async def analyze_video(
 
         # Clean and parse JSON
         try:
-            # Remove any potential markdown formatting
+            # Remove markdown formatting if present
             cleaned_output = analysis_output
             if "```json" in cleaned_output:
                 cleaned_output = cleaned_output.split("```json")[1].split("```")[0].strip()
             elif "```" in cleaned_output:
                 cleaned_output = cleaned_output.split("```")[1].split("```")[0].strip()
             
-            # Fix common JSON issues
-            cleaned_output = cleaned_output.replace("\n", " ")
-            cleaned_output = cleaned_output.replace("    ", "")
-            cleaned_output = cleaned_output.strip()
-            
-            # Remove any trailing commas before closing braces/brackets
+            # Clean up JSON formatting
+            cleaned_output = cleaned_output.replace("\n", " ").replace("    ", "").strip()
             cleaned_output = re.sub(r',(\s*[}\]])', r'\1', cleaned_output)
             
-            # Parse the cleaned JSON
+            # Parse JSON
             analysis_data = json.loads(cleaned_output)
             
         except Exception as e:
             logger.error(f"JSON parsing error: {str(e)}")
             logger.error(f"Raw content causing error: {analysis_output}")
             
-            # Attempt to salvage the JSON by creating a simpler structure
-            try:
-                # Create a basic structure with the raw text
-                analysis_data = {
-                    "analysis": {
-                        "raw_text": analysis_output,
-                        "timestamp": datetime.now().isoformat(),
-                        "email": email
-                    }
+            # Fallback to basic structure
+            analysis_data = {
+                "analysis": {
+                    "raw_text": analysis_output,
+                    "timestamp": datetime.now().isoformat(),
+                    "email": email
                 }
-            except Exception as inner_e:
-                logger.error(f"Failed to create fallback JSON: {str(inner_e)}")
-                raise HTTPException(
-                    status_code=500,
-                    detail="Failed to process analysis output"
-                )
+            }
 
-        # Define file paths for JSON and PDF
+        # Save output files
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         json_output_path = os.path.join("static", "final_report", f"{email}_analysis_{timestamp}.json").replace("\\", "/")
         pdf_file_path = os.path.join("static", "final_report", f"{email}_analysis_report_{timestamp}.pdf").replace("\\", "/")
 
-        # Save JSON with proper encoding
+        # Save JSON
         with open(json_output_path, 'w', encoding='utf-8') as json_output_file:
             json.dump(analysis_data, json_output_file, indent=4, ensure_ascii=False)
 
