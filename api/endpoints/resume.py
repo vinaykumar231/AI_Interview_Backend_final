@@ -95,10 +95,7 @@ def extract_text_from_docx(file_path: str) -> str:
 
 def generate_gemini_prompt(job_description: str, resume_text: str) -> str:
     prompt = f"""
-Here’s the modified prompt with an example output included:
 
----
-**Modified Prompt:**
 
 Evaluate the following resume against the provided job description and provide a detailed evaluation in a structured JSON format. Ensure that the JSON is valid and properly formatted, with all necessary commas included.
 

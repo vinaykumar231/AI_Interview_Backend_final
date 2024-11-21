@@ -314,11 +314,11 @@ def generate_gemini_prompt_for_report_generate(questions: Dict[str, str]) -> str
 
 Provide a detailed evaluation following the structured format for HR managers' PDF report generation, covering:
 1. Transcription of responses
-2. Speech content analysis(Score out of 100)
-3. Non-verbal communication(Score out of 100)
-4. Emotional analysis(Score out of 100)
-5. Audio analysis(Score out of 100)
-6. Overall performance(Score out of 100)
+2. Speech content analysis(Score out of 10)
+3. Non-verbal communication(Score out of 10)
+4. Emotional analysis(Score out of 10)
+5. Audio analysis(Score out of 10)
+6. Overall performance(Score out of 10)
 
 The response must be in valid JSON format following the specified schema."""
 
