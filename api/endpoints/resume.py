@@ -95,11 +95,6 @@ def extract_text_from_docx(file_path: str) -> str:
 
 def generate_gemini_prompt(job_description: str, resume_text: str) -> str:
     prompt = f"""
-<<<<<<< HEAD
-
-=======
-**Modified Prompt:**
->>>>>>> e037ce79e2ba1fc06d463658dba5d2d97781ab23
 
 Evaluate the following resume against the provided job description and provide a detailed evaluation in a structured JSON format. Ensure that the JSON is valid and properly formatted, with all necessary commas included.
 
