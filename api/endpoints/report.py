@@ -9,6 +9,7 @@ import sqlite3
 import ffmpeg
 import tempfile
 import google.generativeai as genai
+from sqlalchemy import desc, func
 from api.models.resume_analysis import Resume_Analysis
 from api.models.user import AI_Interviewer
 from auth.auth_bearer import get_current_user
@@ -323,6 +324,17 @@ Provide a detailed evaluation following the structured format for HR managers' P
 The response must be in valid JSON format following the specified schema."""
 
 
+system_prompt = """You are an advanced AI interviewer and evaluator designed to analyze video interviews. Your primary tasks include:
+
+Transcription: Transcribe interview responses and analyze them based on speech, non-verbal communication, emotions, and audio quality. Ensure strict response segmentation for each question. Clearly separate the transcription for each question without overlap. Assign responses accurately to their respective questions, even if the candidate’s answer spans multiple topics.
+Speech Content Analysis: Assess the relevance, clarity, coherence, and completeness of responses to specific questions.
+Non-verbal Communication Analysis: Evaluate facial expressions, eye contact, and body language for their impact on communication.
+Emotional Analysis: Identify primary emotions and assess emotional consistency throughout the interview.
+Audio Analysis: Rate audio quality, background noise impact, tone, confidence, and speech pace.
+Overall Performance: Summarize the candidate’s strengths, areas for improvement, and provide an overall performance score.
+
+Each section of the response must strictly adhere to the schema's properties and required fields. Prioritize clarity, actionable feedback, and detailed observations. Use the uploaded video as the sole source of data for your analysis.
+"""
 
 @router.post("/analyze")
 async def analyze_video(
@@ -336,9 +348,28 @@ async def analyze_video(
 
     try:
         # Verify HR exists
-        hr_db = db.query(Resume_Analysis).filter(Resume_Analysis.candidate_email == email).first()
+        subquery = (
+                    db.query(
+                        Resume_Analysis.candidate_email,
+                        func.max(Resume_Analysis.uploaded_at).label("latest_resume_hr")  
+                    )
+                    .filter(Resume_Analysis.candidate_email == email)  
+                    .group_by(Resume_Analysis.candidate_email)  
+                    .subquery()
+                )
+        hr_db = (
+            db.query(Resume_Analysis)
+            .join(
+                subquery,
+                (Resume_Analysis.candidate_email == subquery.c.candidate_email) &
+                (Resume_Analysis.uploaded_at == subquery.c.latest_resume_hr)
+            )
+            .first() 
+        )
+
         if not hr_db:
             raise HTTPException(status_code=404, detail="HR not found")
+
         
         logger.info(f"Processing video analysis for email: {email}")
 
@@ -368,9 +399,34 @@ async def analyze_video(
 
         # Get questions from database
         logger.info("Retrieving questions from database")
-        question_db = db.query(Question).filter(Question.candidate_email == email).all()
+        # question_db = db.query(Question).filter(Question.candidate_email == email).all()
+        # if not question_db:
+        #     raise HTTPException(status_code=404, detail="No questions found for the given email.")
+        
+        subquery = (
+                db.query(
+                    Question.candidate_email,
+                    func.max(Question.created_on).label("latest_questions_date")
+                )
+                .group_by(Question.candidate_email)
+                .subquery()
+            )
+
+        question_db = (
+                db.query(Question)
+                .join(
+                    subquery,
+                    (Question.candidate_email == subquery.c.candidate_email) &
+                    (Question.created_on == subquery.c.latest_questions_date)
+                )
+                .filter(Question.candidate_email == email)  
+                .order_by(desc(Question.created_on))  
+                .all()
+            )
+        
         if not question_db:
             raise HTTPException(status_code=404, detail="No questions found for the given email.")
+            
 
         questions = {
             'question1': question_db[0].Qustion1,
@@ -379,6 +435,7 @@ async def analyze_video(
             'question4': question_db[0].Qustion4,
             'question5': question_db[0].Qustion5
         }
+        print('questions',questions)
 
         # Configure Gemini model with schema
         generation_config = configure_gemini_model()
@@ -388,7 +445,8 @@ async def analyze_video(
         try:
             model = genai.GenerativeModel(
                 model_name="models/gemini-1.5-flash",
-                generation_config=generation_config
+                generation_config=generation_config,
+                system_instruction=system_prompt,
             )
             
             prompt = generate_gemini_prompt_for_report_generate(questions)

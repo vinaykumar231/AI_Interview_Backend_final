@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Form
+from sqlalchemy import desc, func
 from sqlalchemy.orm import Session
 from ..models.resume import Resume
 from database import get_db
@@ -503,10 +504,31 @@ async def get_selected_resumes(db: Session = Depends(get_db), current_user: AI_I
 async def get_questions_by_email(candidate_email: str, db: Session = Depends(get_db)):
     try:
         all_data=[]
-        questions = db.query(Question).filter(Question.candidate_email == candidate_email).all()
-        if not questions:
-            raise HTTPException(status_code=404, detail="No questions found for this email")
-        for q in questions:
+        subquery = (
+                db.query(
+                    Question.candidate_email,
+                    func.max(Question.created_on).label("latest_questions_date")
+                )
+                .group_by(Question.candidate_email)
+                .subquery()
+            )
+
+        question_db = (
+                db.query(Question)
+                .join(
+                    subquery,
+                    (Question.candidate_email == subquery.c.candidate_email) &
+                    (Question.created_on == subquery.c.latest_questions_date)
+                )
+                .filter(Question.candidate_email == candidate_email)  
+                .order_by(desc(Question.created_on))  
+                .all()
+            )
+        
+        if not question_db:
+            raise HTTPException(status_code=404, detail="No questions found for the given email.")
+        
+        for q in question_db:
             data={
                 "Qustion1":q.Qustion1,
                 "Qustion2":q.Qustion2,
