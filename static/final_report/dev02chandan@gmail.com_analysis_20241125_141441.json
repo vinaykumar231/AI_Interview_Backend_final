@@ -1,0 +1,110 @@
+{
+    "overall_audio_analysis": {
+        "audio_quality": {
+            "description": "Audio quality was excellent throughout the interview.  The recording was clear and easy to understand.",
+            "score": 9
+        },
+        "background_noise_impact": {
+            "description": "There was minimal background noise, which did not interfere with the understanding of the responses.",
+            "score": 10
+        },
+        "confidence": {
+            "description": "The candidate exhibited confidence in their responses, with a clear and steady tone of voice.",
+            "score": 8
+        },
+        "speech_pace": {
+            "description": "The speech pace was moderate and easy to follow. There were no noticeable instances of rushing or speaking too slowly.",
+            "score": 9
+        },
+        "tone": {
+            "description": "The candidate's tone was professional and enthusiastic.",
+            "score": 9
+        }
+    },
+    "overall_emotional_analysis": {
+        "emotional_consistency": {
+            "description": "The candidate maintained a positive and enthusiastic demeanor throughout the interview.",
+            "score": 9
+        },
+        "primary_emotions": [
+            "Positive",
+            "Enthusiastic",
+            "Confident"
+        ]
+    },
+    "overall_non_verbal_communication": {
+        "body_language": {
+            "description": "Body language was positive and engaging; the candidate used appropriate gestures to emphasize points.",
+            "score": 8
+        },
+        "eye_contact": {
+            "description": "Eye contact was good and consistent, showing engagement with the interviewer.",
+            "score": 9
+        },
+        "facial_expressions": {
+            "description": "Facial expressions were natural and expressive, reflecting the candidate's positive attitude.",
+            "score": 9
+        }
+    },
+    "overall_performance": {
+        "overall_score": 8.8,
+        "summary": {
+            "areas_for_improvement": "While the candidate demonstrated a strong understanding of FastAPI, providing more specific examples in their responses would enhance the clarity and impact of their answers.",
+            "strengths": "The candidate has a solid understanding of FastAPI, excellent communication skills, and a positive and engaging demeanor. They clearly articulated their experiences and displayed confidence in their abilities."
+        }
+    },
+    "overall_speech_content_analysis": {
+        "clarity": {
+            "description": "The candidate's responses were generally clear and easy to understand.",
+            "score": 9
+        },
+        "coherence": {
+            "description": "The responses were well-organized and coherent; the candidate's ideas flowed logically.",
+            "score": 9
+        },
+        "completeness": {
+            "description": "Most responses were complete, though adding specific examples would strengthen the answers further.",
+            "score": 8
+        },
+        "per_question_feedback": {
+            "question_1": {
+                "feedback": "Good overview of experience, but lacked specific quantifiable achievements or projects.",
+                "score": 8
+            },
+            "question_2": {
+                "feedback": "Well-explained challenges; solutions could be more detailed.",
+                "score": 7
+            },
+            "question_3": {
+                "feedback": "The description of the bug was good, but the resolution lacked detail.",
+                "score": 7
+            },
+            "question_4": {
+                "feedback": "Strong example, showcasing quick learning and adaptability. ",
+                "score": 9
+            },
+            "question_5": {
+                "feedback": "Clearly articulated reasons for interest in FastAPI.  Could benefit from aligning interest to company values.",
+                "score": 8
+            }
+        },
+        "relevance": {
+            "description": "All responses were relevant to the questions asked.",
+            "score": 10
+        }
+    },
+    "questions": {
+        "question_1": "Describe your experience developing REST APIs using FastAPI.",
+        "question_2": "What are some of the common challenges you've faced when working with FastAPI, and how did you overcome them?",
+        "question_3": "Tell me about a time you had to troubleshoot a complex bug in a FastAPI application.",
+        "question_4": "Describe a situation where you had to learn a new technology quickly to meet a project deadline.",
+        "question_5": "Why are you interested in working with FastAPI specifically?"
+    },
+    "transcriptions": {
+        "question_1": "I have extensive experience building REST APIs using FastAPI. I've worked on several projects where I was responsible for designing, developing, and deploying these APIs.  I'm comfortable with various aspects of the framework.",
+        "question_2": "One common challenge I've encountered is handling concurrent requests efficiently.  To address this, I've utilized techniques such as asynchronous programming and connection pooling. Another is dependency injection; I find that structuring code using FastAPI's dependency injection system significantly improves maintainability and testability.",
+        "question_3": "I once had to debug a particularly complex issue involving a race condition in an API endpoint. After analyzing the logs, I found that it was due to the incorrect ordering of asynchronous operations.  I fixed this by reorganizing the code and carefully managing the concurrency.",
+        "question_4": "In a previous role, we had to integrate a new payment gateway into an existing application with a tight deadline. I had no prior experience with this gateway, but quickly learned its API documentation and integrated it within a few days.",
+        "question_5": "I'm interested in FastAPI because of its speed, ease of use, and the strong community support.  It's a modern, efficient framework ideal for building robust and scalable APIs."
+    }
+}

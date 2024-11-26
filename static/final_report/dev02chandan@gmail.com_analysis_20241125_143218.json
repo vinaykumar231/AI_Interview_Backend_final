@@ -1,0 +1,109 @@
+{
+    "overall_audio_analysis": {
+        "audio_quality": {
+            "description": "Audio quality was excellent; clear and easy to understand.",
+            "score": 9
+        },
+        "background_noise_impact": {
+            "description": "No background noise detected.",
+            "score": 10
+        },
+        "confidence": {
+            "description": "Candidate displayed confidence in their responses.",
+            "score": 8
+        },
+        "speech_pace": {
+            "description": "Speech pace was moderate and easy to follow.",
+            "score": 9
+        },
+        "tone": {
+            "description": "The tone was professional and positive.",
+            "score": 9
+        }
+    },
+    "overall_emotional_analysis": {
+        "emotional_consistency": {
+            "description": "Candidate maintained a consistent and positive emotional demeanor throughout the interview.",
+            "score": 9
+        },
+        "primary_emotions": [
+            "Positive",
+            "Confident"
+        ]
+    },
+    "overall_non_verbal_communication": {
+        "body_language": {
+            "description": "Body language was positive, engaging, and professional.",
+            "score": 8
+        },
+        "eye_contact": {
+            "description": "Good eye contact was maintained throughout.",
+            "score": 9
+        },
+        "facial_expressions": {
+            "description": "Facial expressions were natural and consistent with verbal communication.",
+            "score": 9
+        }
+    },
+    "overall_performance": {
+        "overall_score": 8.8,
+        "summary": {
+            "areas_for_improvement": "While the candidate demonstrated strong technical abilities, further elaboration on problem-solving approaches in certain scenarios could enhance their responses.",
+            "strengths": "Candidate possesses strong technical expertise in FastAPI and clearly articulates their experiences. They also display good problem-solving skills and a positive attitude."
+        }
+    },
+    "overall_speech_content_analysis": {
+        "clarity": {
+            "description": "Responses were clear, concise, and easy to understand.",
+            "score": 9
+        },
+        "coherence": {
+            "description": "The candidate's responses were well-structured and logically coherent.",
+            "score": 9
+        },
+        "completeness": {
+            "description": "The candidate addressed all aspects of each question thoroughly.",
+            "score": 8
+        },
+        "per_question_feedback": {
+            "question_1": {
+                "feedback": "Candidate provided a detailed and accurate description of their FastAPI experience.",
+                "score": 9
+            },
+            "question_2": {
+                "feedback": "Candidate articulated common challenges and solutions effectively.",
+                "score": 8
+            },
+            "question_3": {
+                "feedback": "Candidate described a complex bug scenario with clarity and demonstrated good troubleshooting skills.",
+                "score": 9
+            },
+            "question_4": {
+                "feedback": "The candidate described a situation where they learned a new technology well and showed initiative.",
+                "score": 8
+            },
+            "question_5": {
+                "feedback": "Candidate's interest in working with FastAPI is clearly articulated.",
+                "score": 9
+            }
+        },
+        "relevance": {
+            "description": "All responses were relevant and directly addressed the questions asked.",
+            "score": 10
+        }
+    },
+    "questions": {
+        "question_1": "Describe your experience developing REST APIs using FastAPI.",
+        "question_2": "What are some of the common challenges you've faced when working with FastAPI, and how did you overcome them?",
+        "question_3": "Tell me about a time you had to troubleshoot a complex bug in a FastAPI application.",
+        "question_4": "Describe a situation where you had to learn a new technology quickly to meet a project deadline.",
+        "question_5": "Why are you interested in working with FastAPI specifically?"
+    },
+    "transcriptions": {
+        "question_1": "I have extensive experience building REST APIs using FastAPI.  I've worked on several projects, from small internal tools to large-scale production systems. I'm comfortable with all aspects of the development lifecycle, from design and implementation to testing and deployment.  I'm proficient in using various features of FastAPI, such as dependency injection, data validation, and asynchronous programming.",
+        "question_2": "One common challenge is handling asynchronous operations efficiently.  I've overcome this by using asyncio and other concurrency tools effectively. Another challenge is ensuring data validation at the API level. I typically address this by leveraging Pydantic's data validation capabilities within my FastAPI endpoints.",
+        "question_3": "In one project, we encountered a very strange issue where some endpoints would intermittently return 500 errors.  After a thorough investigation, I found it was due to a race condition in a database interaction. We solved the issue by using appropriate locking mechanisms to ensure data consistency.",
+        "question_4": "In a previous role, we needed to integrate a new payment gateway into our application quickly. I had no prior experience with this specific gateway, but I was able to quickly grasp the API documentation and integrate it within a tight deadline.  I focused on understanding the core functionality first, then iteratively added more features.",
+        "question_5": "I'm interested in FastAPI because of its speed, efficiency, and ease of use.  It is a modern framework that aligns perfectly with my preferred development style.  Its built-in features for data validation and automatic documentation make development much more productive."
+    }
+}

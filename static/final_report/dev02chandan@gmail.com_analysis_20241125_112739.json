@@ -1,0 +1,109 @@
+{
+    "overall_audio_analysis": {
+        "audio_quality": {
+            "description": "Audio quality was excellent; clear and easy to understand.",
+            "score": 9
+        },
+        "background_noise_impact": {
+            "description": "Minimal background noise; did not interfere with understanding.",
+            "score": 10
+        },
+        "confidence": {
+            "description": "Candidate spoke with confidence and a clear tone.",
+            "score": 8
+        },
+        "speech_pace": {
+            "description": "Speech pace was moderate and easy to follow.",
+            "score": 9
+        },
+        "tone": {
+            "description": "Tone was professional and engaging.",
+            "score": 9
+        }
+    },
+    "overall_emotional_analysis": {
+        "emotional_consistency": {
+            "description": "Candidate maintained a consistent positive demeanor throughout the interview.",
+            "score": 9
+        },
+        "primary_emotions": [
+            "Enthusiasm",
+            "Confidence"
+        ]
+    },
+    "overall_non_verbal_communication": {
+        "body_language": {
+            "description": "Body language was open, confident, and natural.",
+            "score": 8
+        },
+        "eye_contact": {
+            "description": "Good eye contact; made connection with the interviewer.",
+            "score": 9
+        },
+        "facial_expressions": {
+            "description": "Facial expressions were natural, engaged, and appropriate.",
+            "score": 9
+        }
+    },
+    "overall_performance": {
+        "overall_score": 8.8,
+        "summary": {
+            "areas_for_improvement": "Could improve on providing more specific examples in certain responses.",
+            "strengths": "Candidate demonstrated a strong understanding of FastAPI and excellent communication skills."
+        }
+    },
+    "overall_speech_content_analysis": {
+        "clarity": {
+            "description": "Responses were clear, concise, and easy to understand.",
+            "score": 9
+        },
+        "coherence": {
+            "description": "Answers were well-structured and logically organized.",
+            "score": 9
+        },
+        "completeness": {
+            "description": "Candidate answered all questions thoroughly and comprehensively.",
+            "score": 8
+        },
+        "per_question_feedback": {
+            "question_1": {
+                "feedback": "Excellent response. The candidate clearly articulated their understanding of FastAPI's features and usage.",
+                "score": 9
+            },
+            "question_2": {
+                "feedback": "Good overview of challenges, but lacks detail in the solutions.",
+                "score": 7
+            },
+            "question_3": {
+                "feedback": "Specific and detailed description of the troubleshooting process, highlighting analytical skills.",
+                "score": 9
+            },
+            "question_4": {
+                "feedback": "Provided a concise and relevant example of quickly learning a new technology.",
+                "score": 8
+            },
+            "question_5": {
+                "feedback": "Well-articulated explanation of the interest in FastAPI.",
+                "score": 9
+            }
+        },
+        "relevance": {
+            "description": "All answers were highly relevant to the questions asked.",
+            "score": 10
+        }
+    },
+    "questions": {
+        "question_1": "Describe your experience developing REST APIs using FastAPI.",
+        "question_2": "What are some of the common challenges you've faced when working with FastAPI, and how did you overcome them?",
+        "question_3": "Tell me about a time you had to troubleshoot a complex bug in a FastAPI application.",
+        "question_4": "Describe a situation where you had to learn a new technology quickly to meet a project deadline.",
+        "question_5": "Why are you interested in working with FastAPI specifically?"
+    },
+    "transcriptions": {
+        "question_1": "I have extensive experience building REST APIs using FastAPI. I've used it on multiple projects, both large and small, and I'm very comfortable with its features, including routing, data validation, and asynchronous tasks.",
+        "question_2": "One common challenge is dependency management.  Sometimes it's tricky to manage the different versions of libraries. I usually tackle this by using virtual environments and dependency pinning.",
+        "question_3": "In one project, we had a really strange bug where the database would randomly stop responding.  After hours of debugging, I realised it was a connection pool issue.  I resolved it by optimizing the settings for the connection pool and adjusting the timeouts.",
+        "question_4": "In a previous project we needed to integrate a new payment gateway before a tight deadline.  I had never used this specific gateway before, but by carefully reviewing their documentation and using online resources, I managed to successfully integrate it within two days.",
+        "question_5": "I'm really interested in FastAPI because it's so efficient and has a great developer experience. I appreciate the automatic API documentation and its support for asynchronous operations, which is really useful for creating scalable applications."
+    }
+}

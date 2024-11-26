@@ -1,0 +1,110 @@
+{
+    "overall_audio_analysis": {
+        "audio_quality": {
+            "description": "Audio quality was good, with minimal background noise.",
+            "score": 9
+        },
+        "background_noise_impact": {
+            "description": "There was some background noise, but it did not significantly impact the clarity of the audio.",
+            "score": 8
+        },
+        "confidence": {
+            "description": "The candidate's tone of voice conveyed confidence and expertise.",
+            "score": 9
+        },
+        "speech_pace": {
+            "description": "The candidate spoke at a moderate pace, easy to follow.",
+            "score": 9
+        },
+        "tone": {
+            "description": "The candidate maintained a professional and positive tone throughout the interview.",
+            "score": 10
+        }
+    },
+    "overall_emotional_analysis": {
+        "emotional_consistency": {
+            "description": "The candidate remained calm and composed, showing consistency in their emotional expression.",
+            "score": 9
+        },
+        "primary_emotions": [
+            "Confident",
+            "Positive",
+            "Calm"
+        ]
+    },
+    "overall_non_verbal_communication": {
+        "body_language": {
+            "description": "The candidate used open body language and maintained a relaxed posture, conveying approachability.",
+            "score": 8
+        },
+        "eye_contact": {
+            "description": "The candidate made good eye contact, suggesting engagement and attentiveness.",
+            "score": 9
+        },
+        "facial_expressions": {
+            "description": "The candidate exhibited natural and appropriate facial expressions.",
+            "score": 8
+        }
+    },
+    "overall_performance": {
+        "overall_score": 8.8,
+        "summary": {
+            "areas_for_improvement": "While the candidate demonstrated strong technical skills, enhancing the depth of their answers would further strengthen their responses.",
+            "strengths": "The candidate possesses a strong command of FastAPI, showcasing their practical experience and problem-solving abilities. Their confidence and communication skills are impressive."
+        }
+    },
+    "overall_speech_content_analysis": {
+        "clarity": {
+            "description": "The candidate communicated their ideas clearly and concisely.",
+            "score": 9
+        },
+        "coherence": {
+            "description": "The responses were well-structured and coherent, logically connecting different aspects of the questions.",
+            "score": 9
+        },
+        "completeness": {
+            "description": "The candidate addressed all aspects of each question comprehensively.",
+            "score": 8
+        },
+        "per_question_feedback": {
+            "question_1": {
+                "feedback": "The candidate provided a detailed account of their FastAPI experience, highlighting key projects and skills.  Adding specific examples of the complexities they tackled would enhance this answer.",
+                "score": 8
+            },
+            "question_2": {
+                "feedback": "The candidate described their database integration experience with FastAPI effectively.  Mentioning specific challenges and solutions related to database choices would further improve this response.",
+                "score": 9
+            },
+            "question_3": {
+                "feedback": "The candidate successfully described a troubleshooting situation.  Providing more granular details on the specific tools and techniques used during the debugging process would make this response even more impactful.",
+                "score": 8
+            },
+            "question_4": {
+                "feedback": "The candidate's response regarding working under pressure was well articulated. A more detailed description of the specific pressures and how they were mitigated would enhance this answer.",
+                "score": 7
+            },
+            "question_5": {
+                "feedback": "The candidate clearly expressed their enjoyment in aspects of FastAPI development.  Expanding on the reasons behind their enjoyment would add further depth and personality to this response.",
+                "score": 8
+            }
+        },
+        "relevance": {
+            "description": "All responses were directly relevant to the questions asked.",
+            "score": 10
+        }
+    },
+    "questions": {
+        "question_1": "Describe your experience with building RESTful APIs using FastAPI.",
+        "question_2": "What database technologies have you integrated with FastAPI in previous projects?",
+        "question_3": "Describe a situation where you had to troubleshoot a complex issue in a FastAPI application. How did you approach it?",
+        "question_4": "Tell me about a time you had to work under pressure to meet a deadline for an API development project.",
+        "question_5": "What aspects of working with FastAPI and API development do you find most enjoyable?"
+    },
+    "transcriptions": {
+        "question_1": "In my previous role, I extensively used FastAPI to build RESTful APIs. I've worked on several projects involving different levels of complexity, from simple CRUD operations to more intricate systems handling a large volume of requests. I'm quite comfortable with authentication, authorization, and data validation within the FastAPI framework.",
+        "question_2": "I've had experience integrating several database technologies with FastAPI, including PostgreSQL, MySQL, and MongoDB.  My experience ranges from simple data retrieval to complex query constructions and optimizations.",
+        "question_3": "In one project, we encountered a strange issue where our API was returning inconsistent data. Through careful debugging, we discovered a race condition in one of our asynchronous functions. By employing proper locking mechanisms, we successfully resolved the issue and ensured data consistency.",
+        "question_4": "I once had to deliver an API within a tight deadline, which required long hours and efficient teamwork.  We adopted an agile methodology and prioritized tasks strategically, which allowed us to meet the deadline while maintaining quality.",
+        "question_5": "I really enjoy the speed and ease of development that FastAPI provides.  Building efficient and maintainable APIs is very satisfying."
+    }
+}

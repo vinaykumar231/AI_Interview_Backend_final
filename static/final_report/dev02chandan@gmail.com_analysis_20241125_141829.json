@@ -1,0 +1,110 @@
+{
+    "overall_audio_analysis": {
+        "audio_quality": {
+            "description": "Audio quality was excellent throughout the interview. The recording was clear and free of distortions or background noise.",
+            "score": 9
+        },
+        "background_noise_impact": {
+            "description": "There was minimal background noise, which did not interfere with the understanding of the candidate's responses.",
+            "score": 9
+        },
+        "confidence": {
+            "description": "The candidate's tone of voice exuded confidence in their responses, demonstrating a good command of the subject matter.",
+            "score": 8
+        },
+        "speech_pace": {
+            "description": "The candidate maintained a good speech pace, neither too fast nor too slow, ensuring clear articulation.",
+            "score": 8
+        },
+        "tone": {
+            "description": "The candidate's tone was professional and enthusiastic, which created a positive and engaging interaction.",
+            "score": 9
+        }
+    },
+    "overall_emotional_analysis": {
+        "emotional_consistency": {
+            "description": "The candidate displayed emotional consistency throughout the interview, remaining calm, composed, and positive.",
+            "score": 9
+        },
+        "primary_emotions": [
+            "Calm",
+            "Confident",
+            "Positive"
+        ]
+    },
+    "overall_non_verbal_communication": {
+        "body_language": {
+            "description": "The candidate used open and inviting body language.  Their posture and gestures were positive and enhanced their communication.",
+            "score": 8
+        },
+        "eye_contact": {
+            "description": "The candidate made consistent eye contact, indicating engagement and attentiveness.",
+            "score": 9
+        },
+        "facial_expressions": {
+            "description": "Facial expressions were natural, congruent with the verbal responses, and showed genuine engagement.",
+            "score": 9
+        }
+    },
+    "overall_performance": {
+        "overall_score": 8.6,
+        "summary": {
+            "areas_for_improvement": "While the candidate demonstrated strong technical skills and communication abilities, further elaboration on past projects and experiences would enhance their responses.",
+            "strengths": "The candidate possesses strong technical skills in FastAPI, excellent communication skills, and conveys confidence and enthusiasm."
+        }
+    },
+    "overall_speech_content_analysis": {
+        "clarity": {
+            "description": "The candidate provided clear, concise, and easy-to-understand answers to all questions.",
+            "score": 9
+        },
+        "coherence": {
+            "description": "The responses were logical, well-structured, and followed a clear train of thought.",
+            "score": 9
+        },
+        "completeness": {
+            "description": "The responses were thorough, covering all aspects of each question in sufficient detail.",
+            "score": 8
+        },
+        "per_question_feedback": {
+            "question_1": {
+                "feedback": "The candidate provided a good overview of their experience with FastAPI, highlighting key skills and projects.",
+                "score": 8
+            },
+            "question_2": {
+                "feedback": "The candidate demonstrated problem-solving skills by effectively addressing challenges faced with FastAPI.",
+                "score": 9
+            },
+            "question_3": {
+                "feedback": "The candidate clearly explained a complex debugging scenario, showcasing their analytical abilities.",
+                "score": 8
+            },
+            "question_4": {
+                "feedback": "The response showcased the candidate's ability to adapt and learn quickly in a demanding environment.",
+                "score": 9
+            },
+            "question_5": {
+                "feedback": "The candidate articulated their interest in FastAPI with clear reasoning, highlighting its relevance to their career goals.",
+                "score": 9
+            }
+        },
+        "relevance": {
+            "description": "All responses were highly relevant and directly addressed the questions asked.",
+            "score": 10
+        }
+    },
+    "questions": {
+        "question_1": "Describe your experience developing REST APIs using FastAPI.",
+        "question_2": "What are some of the common challenges you've faced when working with FastAPI, and how did you overcome them?",
+        "question_3": "Tell me about a time you had to troubleshoot a complex bug in a FastAPI application.",
+        "question_4": "Describe a situation where you had to learn a new technology quickly to meet a project deadline.",
+        "question_5": "Why are you interested in working with FastAPI specifically?"
+    },
+    "transcriptions": {
+        "question_1": "I have extensive experience building REST APIs with FastAPI. In my previous role, I was responsible for designing and implementing several key APIs for our core product, using FastAPI's asynchronous capabilities to optimize performance.",
+        "question_2": "One common challenge is handling asynchronous operations and ensuring data consistency.  We overcame this by implementing robust error handling and using appropriate database transactions.",
+        "question_3": "In one project, we encountered a memory leak that was causing the API to crash under heavy load. I used tools like memory profilers and debuggers to pinpoint the issue to a specific function and implemented a fix, deploying a corrected version rapidly.",
+        "question_4": "During a recent project, I had to quickly learn and integrate a new payment gateway. I leveraged the gateway's comprehensive documentation and online tutorials to fully integrate it within the tight deadline.",
+        "question_5": "I'm interested in FastAPI because of its ease of use, speed, and modern design principles. Its Pythonic nature makes development efficient and allows for rapid iteration."
+    }
+}
