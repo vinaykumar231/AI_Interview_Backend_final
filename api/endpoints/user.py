@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
 import jwt
 from fastapi import APIRouter, Depends, HTTPException,Form
+from sqlalchemy import func
 from sqlalchemy.orm import Session
+from api.models.report import Report
 from auth.auth_bearer import JWTBearer, get_admin, get_current_user
 from database import get_db, api_response
 from ..models.user import AI_Interviewer
@@ -11,6 +13,7 @@ from .Email_config import send_email
 import random
 import pytz
 from ..models.company import Companies
+from sqlalchemy.orm import joinedload
 
 router = APIRouter()
 
@@ -122,6 +125,61 @@ def AI_Interviewer_register(
     except:
         db.rollback()
         raise HTTPException(status_code=404, detail=f"Failed to register")
+
+@router.get("/get_all_users/")
+def get_current_user_details( db: Session = Depends(get_db)):
+    try:
+        all_user=[]
+        user_db=db.query(AI_Interviewer).all()
+        for user in user_db:
+            user_details = {
+                "user_id": user.user_id,
+                "username": user.user_name,
+                "email": user.user_email,
+                "user_type": user.user_type,
+                "phone_no" : user.phone_no,
+
+            }
+            all_user.append(user_details)
+        return all_user
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+    
+@router.get("/get_all_hr_count_with_candidate/")
+def get_all_hr_count_with_candidate(db: Session = Depends(get_db)):
+    reports = (
+        db.query(Report)
+        .options(joinedload(Report.user))  
+        .all()
+    )
+
+    # Aggregate data
+    hr_data = {}
+    for report in reports:
+        hr_id = report.hr_id
+        hr_name = report.user.user_name if report.user else "Unknown HR"  
+
+        if hr_id not in hr_data:
+            hr_data[hr_id] = {
+                "hr_id": hr_id,
+                "hr_name": hr_name,
+                "candidate_count": 0,
+                "candidate_names": []
+            }
+        
+        hr_data[hr_id]["candidate_count"] += 1
+        if report.candidate_name:
+            hr_data[hr_id]["candidate_names"].append(report.candidate_name)
+
+    hr_counts = list(hr_data.values())
+    for hr in hr_counts:
+        hr["candidate_names"] = sorted(hr["candidate_names"])  
+
+    response = {
+        "hr_counts": hr_counts,
+    }
+
+    return response
 
 
 @router.get("/read/user", dependencies=[Depends(JWTBearer()), Depends(get_admin)])

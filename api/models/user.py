@@ -45,6 +45,8 @@ class AI_Interviewer(Base):
 
     resume_analysis = relationship("Resume_Analysis", back_populates="user")
 
+    reports = relationship("Report", back_populates="user")
+
     # #######################################################################################################################
     @staticmethod
     def validate_email(email):

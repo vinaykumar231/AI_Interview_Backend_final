@@ -11,7 +11,7 @@ class Report(Base):
     __tablename__ = "reports1"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    hr_id = Column(Integer)
+    hr_id = Column(Integer, ForeignKey('users.user_id'))
     candidate_name=Column(String(250))
     resume_file=Column(String(255))
     email=Column(String(255))
@@ -19,6 +19,8 @@ class Report(Base):
     video_url=Column(String(255))
     created_on = Column(DateTime, default=func.now())
 
+    user = relationship("AI_Interviewer", back_populates="reports")
+    
 
 def save_upload_resume(upload_file: UploadFile) -> str:
     if not upload_file:

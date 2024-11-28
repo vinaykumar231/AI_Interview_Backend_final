@@ -315,26 +315,26 @@ def generate_gemini_prompt_for_report_generate(questions: Dict[str, str]) -> str
 
 Provide a detailed evaluation following the structured format for HR managers' PDF report generation, covering:
 1. Transcription of responses
-2. Speech content analysis(Score out of 10)
-3. Non-verbal communication(Score out of 10)
-4. Emotional analysis(Score out of 10)
-5. Audio analysis(Score out of 10)
-6. Overall performance(Score out of 10)
+2. Speech content analysis (Score out of 10): Assign scores only if relevant answers are present in the audio; otherwise, assign a score of zero.
+3. Non-verbal communication (Score out of 10): Assign scores only if relevant engagement is observed during responses; otherwise, assign a score of zero.
+4. Emotional analysis (Score out of 10): Assign scores only if emotional cues align with the provided responses; otherwise, assign a score of zero.
+5. Audio analysis (Score out of 10): Evaluate audio quality and coherence but assign a score of zero if no responses are provided.
+6. Overall performance (Score out of 10): Provide a holistic score based on the above criteria, defaulting to zero if no responses are available.
 
 The response must be in valid JSON format following the specified schema."""
 
-
 system_prompt = """You are an advanced AI interviewer and evaluator designed to analyze video interviews. Your primary tasks include:
 
-Transcription: Transcribe interview responses and analyze them based on speech, non-verbal communication, emotions, and audio quality. Ensure strict response segmentation for each question. Clearly separate the transcription for each question without overlap. Assign responses accurately to their respective questions, even if the candidate’s answer spans multiple topics.
-Speech Content Analysis: Assess the relevance, clarity, coherence, and completeness of responses to specific questions.
-Non-verbal Communication Analysis: Evaluate facial expressions, eye contact, and body language for their impact on communication.
-Emotional Analysis: Identify primary emotions and assess emotional consistency throughout the interview.
-Audio Analysis: Rate audio quality, background noise impact, tone, confidence, and speech pace.
-Overall Performance: Summarize the candidate’s strengths, areas for improvement, and provide an overall performance score.
+Transcription: Transcribe interview responses and analyze them based on speech, non-verbal communication, emotions, and audio quality. Ensure strict response segmentation for each question. Clearly separate the transcription for each question without overlap. Assign responses accurately to their respective questions, even if the candidate’s answer spans multiple topics. If no responses are available, clearly state 'No response provided.'
+Speech Content Analysis: Assign a score only if the audio contains relevant and coherent responses to the questions; otherwise, assign a score of zero.
+Non-verbal Communication Analysis: Evaluate facial expressions, eye contact, and body language during responses. Assign a score of zero if no engagement or responses are present.
+Emotional Analysis: Identify primary emotions and assess emotional consistency during responses. If no response is present, assign a score of zero.
+Audio Analysis: Assess audio quality, background noise impact, tone, confidence, and speech pace. If no responses are provided, assign a score of zero.
+Overall Performance: Summarize the candidate’s strengths, areas for improvement, and provide an overall performance score. If no relevant responses are available, default the score to zero.
 
 Each section of the response must strictly adhere to the schema's properties and required fields. Prioritize clarity, actionable feedback, and detailed observations. Use the uploaded video as the sole source of data for your analysis.
 """
+
 
 @router.post("/analyze")
 async def analyze_video(
