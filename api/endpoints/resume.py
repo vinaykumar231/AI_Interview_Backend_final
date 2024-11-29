@@ -341,8 +341,26 @@ async def send_resume_selection_email(
     for email in send_to_list:
         candidate_email = email.strip() 
         
-        resume_analysis = db.query(Resume_Analysis).options(joinedload(Resume_Analysis.user)).filter(Resume_Analysis.candidate_email == email).first()
-
+        subquery = (
+                    db.query(
+                        Resume_Analysis.candidate_email,
+                        func.max(Resume_Analysis.uploaded_at).label("latest_resume_hr")  
+                    )
+                    .filter(Resume_Analysis.candidate_email == email)  
+                    .group_by(Resume_Analysis.candidate_email)  
+                    .subquery()
+                )
+        resume_analysis = (
+            db.query(Resume_Analysis)
+            .join(
+                subquery,
+                (Resume_Analysis.candidate_email == subquery.c.candidate_email) &
+                (Resume_Analysis.uploaded_at == subquery.c.latest_resume_hr)
+            )
+            .first() 
+        )
+        if not resume_analysis:
+            raise HTTPException(status_code=404, detail="HR not found for this candidate")
 
         if resume_analysis.resume_selection_status != "resume selected":
             results[candidate_email] = {"status": "Resume not selected", "recipients": []}
