@@ -315,11 +315,53 @@ def generate_gemini_prompt_for_report_generate(questions: Dict[str, str]) -> str
 
 Provide a detailed evaluation following the structured format for HR managers' PDF report generation, covering:
 1. Transcription of responses
+- Please provide the transcriptions of the responses from the video.
+   - If no transcription is available for a question, assign a score of zero and explicitly mention that no transcription is available.
+   - Do not generate AI-based transcriptions if the video lacks one. Explicitly state it.
+
+If no transcriptions are provided, explicitly mention:
+"No response provided."
+No AI-generated transcription will be attempted.
+Scores for all metrics will default to zero.
+
+Evaluation Metrics:
+
+Assign 0 to Relevance, Clarity, Coherence, and Completeness due to the absence of responses.
+Non-verbal communication, emotional analysis, and audio analysis scores also default to 0 as they depend on the presence of responses.
+
 2. Speech content analysis (Score out of 10): Assign scores only if relevant answers are present in the audio; otherwise, assign a score of zero.
+   - Relevance: 0
+   - Clarity: 0
+   - Coherence: 0
+   - Completeness: 0
+   - If no transcription is available for all questions, all scores must default to zero with an explicit mention.
+
 3. Non-verbal communication (Score out of 10): Assign scores only if relevant engagement is observed during responses; otherwise, assign a score of zero.
-4. Emotional analysis (Score out of 10): Assign scores only if emotional cues align with the provided responses; otherwise, assign a score of zero.
+   - Assess facial expressions, eye contact, body language, and engagement level.
+   - Provide scores based on relevance and consistency with the provided responses.
+
+4. Emotional analysis (Score out of 10): Assign scores only if emotional cues align with the responses; otherwise, assign a score of zero.
+   - Evaluate emotional authenticity, depth, and consistency.
+
 5. Audio analysis (Score out of 10): Evaluate audio quality and coherence but assign a score of zero if no responses are provided.
+   - Assess clarity, tone, pace, and background noise.
+
 6. Overall performance (Score out of 10): Provide a holistic score based on the above criteria, defaulting to zero if no responses are available.
+
+Include a comment explicitly stating the reason for the zero score: "No responses were provided for the questions. Therefore, all evaluation metrics default to zero."
+Provide detailed feedback for all Overall performance score assigned (e.g. 0, 5...), including clear reasons to justify the given marks.
+
+If relevant transcription is provide, assign scores from5 to 1 based on the quality of the overall responses.  
+   - Score 10: Excellent performance across all criteria with highly relevant, clear, and complete responses.  
+   - Score 7-9: Strong performance, with minor gaps or inconsistencies.  
+   - Score 5-6: Adequate performance, addressing some questions but with clear gaps in relevance or clarity.
+   - Score 2-4: Poor performance with significant gaps or deficiencies in the responses, affecting overall evaluation.
+
+Note: If no transcription is available for all questions:
+- Automatically set all scores to 0 (Relevance, Clarity, Coherence, Completeness, etc.).
+- Explicitly mention the lack of transcription and that no AI-generated transcription was used.
+- Ensure that the evaluation is based solely on the actual responses from the interview.
+Provide detailed feedback for all scores assigned (e.g., 0, 5...), including clear reasons to justify the given marks in Strengths Areas for Improvement
 
 The response must be in valid JSON format following the specified schema."""
 
@@ -566,6 +608,7 @@ def get_resume_reports(db: Session = Depends(get_db), current_user: AI_Interview
                 "resume": resume_url,
                 "candidate_name": resume.candidate_name,
                 "video_url": video_path,
+                "created_on": resume.created_on,
             }
             resume_list.append(report_data)
 
