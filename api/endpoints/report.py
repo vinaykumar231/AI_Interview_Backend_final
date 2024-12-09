@@ -192,7 +192,7 @@ def concatenate_videos(video_files, output_file):
 #     except Exception as e:
 #         raise HTTPException(status_code=500, detail=f"Error saving file: {str(e)}") 
 
-
+# configure
 def configure_gemini_model():
     """Configure Gemini model with response schema"""
     def create_score_description_schema():
