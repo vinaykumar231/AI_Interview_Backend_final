@@ -51,14 +51,14 @@ def get_admin(user_id: int = Depends(get_user_id_from_token), db: Session = Depe
 
 def get_hr(user_id: int = Depends(get_user_id_from_token), db: Session = Depends(get_db)) -> Optional[AI_Interviewer]:
     user = db.query(AI_Interviewer).filter(AI_Interviewer.user_id == user_id).first()
-    if user.user_type != "teacher":
+    if user.user_type != "HR":
         raise HTTPException(status_code=403, detail="You are not authorized to perform this action")
 
 def get_admin_or_hr(user_id: int = Depends(get_user_id_from_token), db: Session = Depends(get_db)) -> Optional[AI_Interviewer]:
     user = db.query(AI_Interviewer).filter(AI_Interviewer.user_id == user_id).first()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    if user.user_type not in ["parent", "admin"]:
+    if user.user_type not in ["HR", "admin"]:
         raise HTTPException(status_code=403, detail="You are not authorized to perform this action")
     return user
 def get_current_user(token: str = Depends(JWTBearer()), db: Session = Depends(get_db)) -> Optional[AI_Interviewer]:

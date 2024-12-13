@@ -120,6 +120,19 @@ class InterviewUpdate(BaseModel):
     interview_type: Optional[str] = None
     status: Optional[str] = None
 
+################################ Business Message ########################
+
+class CompanyBase(BaseModel):
+    company_name: str
+    contact_person_name: str
+    business_email: str
+    phone_number: str | None = None
+    company_website: str | None = None
+    company_size: str
+    company_description: str
+
+class CompanyCreate(CompanyBase):
+    pass
 
     
 

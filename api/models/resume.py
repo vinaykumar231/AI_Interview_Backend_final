@@ -10,6 +10,7 @@ class Resume(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     company_id = Column(Integer, ForeignKey('companies.id'))
     user_id = Column(Integer, ForeignKey('users.user_id'))
+    job_title =Column(String(255))
     candidate_email=Column(String(255))
     file_path = Column(String(255))
     resume_extract_data=Column(JSON)

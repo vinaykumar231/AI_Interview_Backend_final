@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import jwt
 from fastapi import APIRouter, Depends, HTTPException,Form
+from pydantic import BaseModel
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from api.models.report import Report
@@ -38,7 +39,7 @@ async def AI_Interviewers(credential: LoginInput):
         return HTTPException(status_code=500, detail=f"login failed: {str(e)}")
 
 
-@router.post("/insert/ai_Interviewer_register/")
+@router.post("/insert/ai_Interviewer_register/", dependencies=[Depends(JWTBearer()), Depends(get_admin)])
 def AI_Interviewer_register(data: UserCreate, db: Session = Depends(get_db)):
     try:
         if not AI_Interviewer.validate_email(data.user_email):
@@ -82,7 +83,7 @@ def AI_Interviewer_register(data: UserCreate, db: Session = Depends(get_db)):
 
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=404, detail=f"{e}")
+        raise HTTPException(status_code=404, detail=f"filed to hr Register")
 
 @router.post("/insert/student_level_register/")
 def AI_Interviewer_register(
@@ -126,7 +127,7 @@ def AI_Interviewer_register(
         db.rollback()
         raise HTTPException(status_code=404, detail=f"Failed to register")
 
-@router.get("/get_all_users/")
+@router.get("/get_all_users/", dependencies=[Depends(JWTBearer()), Depends(get_admin)])
 def get_current_user_details( db: Session = Depends(get_db)):
     try:
         all_user=[]
@@ -138,6 +139,8 @@ def get_current_user_details( db: Session = Depends(get_db)):
                 "email": user.user_email,
                 "user_type": user.user_type,
                 "phone_no" : user.phone_no,
+                "company" : user.company_name,
+                "industry" : user.industry,
 
             }
             all_user.append(user_details)
@@ -145,7 +148,7 @@ def get_current_user_details( db: Session = Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
     
-@router.get("/get_all_hr_count_with_candidate/")
+@router.get("/get_all_hr_count_with_candidate/",dependencies=[Depends(JWTBearer()), Depends(get_admin)])
 def get_all_hr_count_with_candidate(db: Session = Depends(get_db)):
     reports = (
         db.query(Report)
@@ -204,6 +207,32 @@ def get_current_user_details(current_user: AI_Interviewer = Depends(get_current_
         return api_response(data=user_details, status_code=200)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+    
+class UserTypeUpdate(BaseModel):
+    user_id: int
+    user_type: str
+
+@router.put("/update_user_type/")
+async def update_user_type(update: UserTypeUpdate, db: Session = Depends(get_db)):
+    # Check if user exists
+    user = db.query(AI_Interviewer).filter(AI_Interviewer.user_id == update.user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Update the user type
+    user.user_type = update.user_type
+    db.commit()
+    return {"message": "User type updated successfully"}
+
+@router.delete("/delete_user/{user_id}")
+async def delete_user(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(AI_Interviewer).filter(AI_Interviewer.user_id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    db.delete(user)
+    db.commit()
+    return {"message": f"User with ID {user_id} deleted successfully"}
 
 @router.put("/update/lms_user/{user_id}", dependencies=[Depends(JWTBearer())])
 async def lms_user_update(user_data: UpdateUser, user_id: int,

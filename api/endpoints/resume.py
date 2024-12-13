@@ -15,7 +15,7 @@ import json
 from typing import Optional
 from ..models.job_description import Job_Descriptions
 from ..models.user import AI_Interviewer
-from auth.auth_bearer import JWTBearer, get_admin, get_current_user
+from auth.auth_bearer import JWTBearer, get_admin, get_current_user, get_admin_or_hr
 from ..models.company import Companies
 from datetime import datetime, timedelta
 import pytz
@@ -213,6 +213,7 @@ async def upload_files(
             resume_entry = Resume(
                 company_id=company.id,
                 user_id=current_user.user_id,
+                job_title=job_title,
                 candidate_email=email,
                 file_path=file_path,
                 resume_extract_data=resume_text.replace("```json", "").replace("\n", "").replace("```", "").replace("\\n", "").strip(),
@@ -559,3 +560,67 @@ async def get_questions_by_email(candidate_email: str, db: Session = Depends(get
         return all_data
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred while retrieving the questions: {str(e)}")
+    
+@router.get("/Total_resumeUploaded_by_hr/", dependencies=[Depends(JWTBearer()), Depends(get_admin_or_hr)])
+def get_hr_resume_statistics(hr_id: int, db: Session = Depends(get_db)):
+
+    hr = db.query(AI_Interviewer).filter(AI_Interviewer.user_id == hr_id).first()
+    if not hr:
+        raise HTTPException(status_code=404, detail="HR not found")
+    total_uploaded = (db.query(func.count(Resume_Analysis.id)).join(AI_Interviewer, Resume_Analysis.hr_id == AI_Interviewer.user_id).filter(Resume_Analysis.hr_id == hr_id).scalar())
+    total_selected = db.query(func.count(Resume_Analysis.id)).filter(Resume_Analysis.hr_id == hr_id, Resume_Analysis.resume_selection_status == "resume selected").scalar()
+    total_rejected = db.query(func.count(Resume_Analysis.id)).filter(Resume_Analysis.hr_id == hr_id, Resume_Analysis.resume_selection_status == "resume rejected").scalar()
+
+    return {
+        "hr_id": hr_id,
+         "hr_name": hr.user_name,
+        "total_uploaded": total_uploaded,
+        "total_selected": total_selected,
+        "total_rejected": total_rejected,
+    }
+
+@router.get("/get_resumes_analysis_report/", dependencies=[Depends(JWTBearer()), Depends(get_admin_or_hr)])
+def get_resumes_by_hr(hr_id: int, db: Session = Depends(get_db)):
+    resumes = db.query(Resume).options(joinedload(Resume.user)).filter(Resume.user_id == hr_id).all()
+    if not resumes:
+        raise HTTPException(status_code=404, detail="No resumes found for this HR")
+
+    resume_data = []
+    for resume in resumes:
+        hr_name = resume.user.user_name if resume.user else None  
+        result = resume.result if resume.result else {}
+        relevance = result.get("relevance", None)
+        strengths = result.get("strengths", [])
+        skills_fit = result.get("skills_fit", None)
+        weaknesses = result.get("weaknesses", [])
+        cultural_fit = result.get("cultural_fit", None)
+        overall_score = result.get("overall_score", None)
+        candidate_info = result.get("candidate_info", {})
+        recommendations = result.get("recommendations", [])
+        experience_match = result.get("experience_match", None)
+        missing_elements = result.get("missing_elements", [])
+
+        SCORE_THRESHOLD = int(os.getenv('SCORE_THRESHOLD', 75))
+        RESUME_SELECTED_MESSAGE = os.getenv('RESUME_SELECTED_MESSAGE', 'resume selected')
+        RESUME_REJECTED_MESSAGE = os.getenv('RESUME_REJECTED_MESSAGE', 'resume rejected')
+        resume_status = RESUME_SELECTED_MESSAGE if overall_score >= SCORE_THRESHOLD else RESUME_REJECTED_MESSAGE
+
+        resume_data.append({
+            "candidate_email": resume.candidate_email,
+            "uploaded_at": resume.uploaded_at,
+            "hr_name": hr_name,
+            "relevance": relevance,
+            "strengths": strengths,
+            "skills_fit": skills_fit,
+            "weaknesses": weaknesses,
+            "cultural_fit": cultural_fit,
+            "overall_score": overall_score,
+            "candidate_info": candidate_info,
+            "recommendations": recommendations,
+            "experience_match": experience_match,
+            "missing_elements": missing_elements,
+            "resume_status":resume_status,
+            "job_title":resume.job_title,
+        })
+
+    return resume_data
