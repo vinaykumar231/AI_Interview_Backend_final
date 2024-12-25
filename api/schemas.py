@@ -134,6 +134,42 @@ class CompanyBase(BaseModel):
 class CompanyCreate(CompanyBase):
     pass
 
+######################################## job posting in table model ##########################
+
+class JobStatus(str, Enum):
+    DRAFT = "Draft"
+    PUBLISHED = "Published"
+
+# Enum for Job Type
+class JobType(str, Enum):
+    FULL_TIME = "Full-time"
+    PART_TIME = "Part-time"
+    CONTRACT = "Contract"
+    INTERNSHIP = "Internship"
+
+class Employmenttype(str, Enum):
+    Remote ="Remote"
+    On_site="On_site"
+    Hybrid="Hybrid"
+
+# Pydantic model for job posting creation
+class JobPostingCreate(BaseModel):
+    job_title: Optional[str]
+    job_description: Optional[str]
+    company_name: Optional[str]
+    department: Optional[str]
+    location: Optional[str]
+    job_type: Optional[JobType]
+    experience_required: Optional[str]
+    employment_type: Optional[Employmenttype]
+    requirements: Optional[str]
+    responsibilities: Optional[str]
+    salary_range: Optional[str]
+    benefits: Optional[str]
+    application_deadline: Optional[date]
+    status: Optional[JobStatus]
+
+
     
 
 

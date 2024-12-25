@@ -7,6 +7,7 @@ from .resume import Resume
 from .company import Companies
 from .resume_analysis import Resume_Analysis
 from .report import Report
+from .jobposting import JobPostingTable
 from .interview_scheduled_data import InterviewScheduledData
 from .student_level.resume_upload import Resume_upload
 from .student_level.resume_analysis import S_Resume_Analysis

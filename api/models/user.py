@@ -47,6 +47,8 @@ class AI_Interviewer(Base):
 
     reports = relationship("Report", back_populates="user")
 
+    job_posting = relationship("JobPostingTable", back_populates="user")
+
     # #######################################################################################################################
     @staticmethod
     def validate_email(email):
