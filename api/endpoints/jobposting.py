@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from datetime import date
 from pydantic import BaseModel
 from typing import Optional
-
 from api.models.user import AI_Interviewer
 from auth.auth_bearer import JWTBearer, get_admin_or_hr, get_current_user
 from database import get_db 

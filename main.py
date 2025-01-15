@@ -4,7 +4,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from database import Base, engine
-from api.endpoints import (user_router,resume_router,report_router,student_resume_upload_router,student_report_router, Business_Message_router,jobposting_router)
+from api.endpoints import (user_router,resume_router,report_router,student_resume_upload_router,student_report_router, Business_Message_router,jobposting_router,jobapply_router)
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -25,6 +25,7 @@ app.include_router(jobposting_router, prefix="/api", tags=["HR Routes"])
 app.include_router(student_resume_upload_router, prefix="/api", tags=["student Routes"])
 app.include_router(student_report_router, prefix="/api", tags=["student Routes"])
 app.include_router(Business_Message_router, prefix="/api", tags=["admin Routes"])
+app.include_router(jobapply_router, prefix="/api", tags=["job apply Routes"])
 
 
 if __name__ == "__main__":

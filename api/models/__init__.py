@@ -15,3 +15,4 @@ from .student_level.student_question import S_Question
 from .student_level.video import S_Video
 from .student_level.report import S_Report
 from .admin_level.Business_Message import Business_message
+from .jobapply import CandidateProfile, Education, Project, Certification

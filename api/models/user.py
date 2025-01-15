@@ -49,6 +49,8 @@ class AI_Interviewer(Base):
 
     job_posting = relationship("JobPostingTable", back_populates="user")
 
+    candidate_profile = relationship("CandidateProfile", back_populates="user")
+
     # #######################################################################################################################
     @staticmethod
     def validate_email(email):

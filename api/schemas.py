@@ -169,6 +169,58 @@ class JobPostingCreate(BaseModel):
     application_deadline: Optional[date]
     status: Optional[JobStatus]
 
+################################################### job apply #############################
+
+class JobDetailSchema(BaseModel):
+    job_title: str
+    company_name: str
+    job_duration_from: date
+    job_duration_to: Optional[date] = None
+    job_skills: Optional[str] = None
+    job_summary: Optional[str] = None
+
+class EducationSchema(BaseModel):
+    degree: str
+    field_of_study: str
+    institution_name: str
+    year_of_passing: int
+
+class ProjectSchema(BaseModel):
+    project_name: str
+    description: str = None
+    technologies_used: str = None
+
+class CertificationSchema(BaseModel):
+    certification_name: str
+    issued_by: str
+    issued_date: str
+
+class CandidateProfileSchema(BaseModel):
+    gender: str
+    date_of_birth: str
+    country: str
+    province_state: str
+    city: str
+    job_domain_function: str
+    job_sub_role: str
+    experience: float
+    total_experience_years: int
+    total_experience_months: int
+    current_company_name: str
+    current_job_title: str
+    joining_date: str
+    current_ctc: float
+    expected_ctc: float
+    job_profile: str = None
+    notice_period: str = None
+    educations: list[EducationSchema]
+    projects: list[ProjectSchema]
+    certifications: list[CertificationSchema]
+    job_details: List[JobDetailSchema]
+
+    class Config:
+        orm_mode = True
+
 
     
 
