@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, Float, ForeignKey, Text
+from sqlalchemy import Boolean, Column, Integer, String, Date, Float, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -30,6 +30,8 @@ class CandidateProfile(Base):
     expected_ctc = Column(Float, nullable=False)
     job_profile = Column(String(255), nullable=True)
     notice_period = Column(String(255), nullable=True)
+
+    is_job_applied  = Column(Boolean, server_default='0', nullable=False)
 
     # Relationships
     educations = relationship("Education", back_populates="candidate_profile", cascade="all, delete-orphan")

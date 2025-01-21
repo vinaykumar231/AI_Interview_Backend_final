@@ -18,6 +18,13 @@ def create_candidate_profile(
     current_user: AI_Interviewer = Depends(get_current_user)
 ):
     try:
+        job_apply = db.query(CandidateProfile).filter(
+            CandidateProfile.is_job_applied == True,
+            CandidateProfile.user_id == current_user.user_id
+        ).first()
+        if job_apply:
+            raise HTTPException(status_code=400, detail="You have already applied for a job.")
+
         new_profile = CandidateProfile(
             user_id=current_user.user_id,
             gender=profile_data.gender,
@@ -83,6 +90,9 @@ def create_candidate_profile(
             db.add(new_job_detail)
 
         db.commit()
+        
+        new_profile.is_job_applied = True
+
         return {"message": "job apply successfully."}
     except HTTPException as http_exc:
         raise http_exc
