@@ -112,7 +112,7 @@ The **AI Interviewer** is an innovative virtual assistant designed to automate t
 ---
 
 ## Future Enhancements
-- ntegration with video conferencing platforms for live interviews.
+- Integration with video conferencing platforms for live interviews.
 - Advanced sentiment analysis for more accurate evaluations.
 - Mobile app support for recruiters and candidates.
 - Integration with job boards for automatic candidate sourcing.
