@@ -18,16 +18,16 @@ class CandidateProfile(Base):
     # Industry
     job_domain_function = Column(String(255), nullable=False)
     job_sub_role = Column(String(255), nullable=False)
-    experience = Column(Float, nullable=False)
+    experience = Column(Float, nullable=True)
 
     # Employment
     total_experience_years = Column(Integer, nullable=False)
-    total_experience_months = Column(Integer, nullable=False)
+    #total_experience_months = Column(Integer, nullable=False)
     current_company_name = Column(String(255), nullable=False)
     current_job_title = Column(String(255), nullable=False)
-    joining_date = Column(Date, nullable=False)
-    current_ctc = Column(Float, nullable=False)
-    expected_ctc = Column(Float, nullable=False)
+    joining_date = Column(Date, nullable=True)
+    current_ctc = Column(Float, nullable=True)
+    expected_ctc = Column(Float, nullable=True)
     job_profile = Column(String(255), nullable=True)
     notice_period = Column(String(255), nullable=True)
 
@@ -44,7 +44,7 @@ class Education(Base):
     __tablename__ = "educations_tb"
 
     id = Column(Integer, primary_key=True, index=True)
-    candidate_id = Column(Integer, ForeignKey("candidate_profiles_tb.candidate_id"), nullable=False)  
+    candidate_id = Column(Integer, ForeignKey("candidate_profiles_tb.user_id"), nullable=False)  
     degree = Column(String(255), nullable=False)  
     field_of_study = Column(String(255), nullable=False)  
     institution_name = Column(String(255), nullable=False)  
@@ -56,7 +56,7 @@ class Project(Base):
     __tablename__ = "projects_tb"
 
     id = Column(Integer, primary_key=True, index=True)
-    candidate_id = Column(Integer, ForeignKey("candidate_profiles_tb.candidate_id"), nullable=False)  
+    candidate_id = Column(Integer, ForeignKey("candidate_profiles_tb.user_id"), nullable=False)  
     project_name = Column(String(255), nullable=False)
     description = Column(String(255), nullable=True)
     technologies_used = Column(String(255), nullable=True)
@@ -78,10 +78,10 @@ class JobDetail(Base):
     __tablename__ = "job_details_tb"
 
     id = Column(Integer, primary_key=True, index=True)
-    candidate_id = Column(Integer, ForeignKey("candidate_profiles_tb.candidate_id"), nullable=False)  
+    candidate_id = Column(Integer, ForeignKey("candidate_profiles_tb.user_id"), nullable=False)  
     job_title = Column(String(255), nullable=False)
     company_name = Column(String(255), nullable=False)
-    job_duration_from = Column(Date, nullable=False)  
+    job_duration_from = Column(Date, nullable=True)  
     job_duration_to = Column(Date, nullable=True)  
     job_skills = Column(Text, nullable=True)  
     job_summary = Column(Text, nullable=True)  

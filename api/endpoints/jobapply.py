@@ -36,7 +36,7 @@ def create_candidate_profile(
             job_sub_role=profile_data.job_sub_role,
             experience=profile_data.experience,
             total_experience_years=profile_data.total_experience_years,
-            total_experience_months=profile_data.total_experience_months,
+            #total_experience_months=profile_data.total_experience_months,
             current_company_name=profile_data.current_company_name,
             current_job_title=profile_data.current_job_title,
             joining_date=profile_data.joining_date,
@@ -51,7 +51,7 @@ def create_candidate_profile(
 
         for edu in profile_data.educations:
             new_education = Education(
-                candidate_id=new_profile.candidate_id,
+                candidate_id=new_profile.user_id,
                 degree=edu.degree,
                 field_of_study=edu.field_of_study,
                 institution_name=edu.institution_name,
@@ -61,7 +61,7 @@ def create_candidate_profile(
 
         for proj in profile_data.projects:
             new_project = Project(
-                candidate_id=new_profile.candidate_id,
+                candidate_id=new_profile.user_id,
                 project_name=proj.project_name,
                 description=proj.description,
                 technologies_used=proj.technologies_used,
@@ -79,7 +79,7 @@ def create_candidate_profile(
 
         for job in profile_data.job_details:
             new_job_detail = JobDetail(
-                candidate_id=new_profile.candidate_id,
+                candidate_id=new_profile.user_id,
                 job_title=job.job_title,
                 company_name=job.company_name,
                 job_duration_from=job.job_duration_from,

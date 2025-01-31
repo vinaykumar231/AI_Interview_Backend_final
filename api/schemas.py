@@ -172,9 +172,9 @@ class JobPostingCreate(BaseModel):
 ################################################### job apply #############################
 
 class JobDetailSchema(BaseModel):
-    job_title: str
-    company_name: str
-    job_duration_from: date
+    job_title: Optional[str] = None
+    company_name:Optional[str] = None
+    job_duration_from: Optional[date] = None
     job_duration_to: Optional[date] = None
     job_skills: Optional[str] = None
     job_summary: Optional[str] = None
@@ -186,14 +186,14 @@ class EducationSchema(BaseModel):
     year_of_passing: int
 
 class ProjectSchema(BaseModel):
-    project_name: str
-    description: str = None
-    technologies_used: str = None
+    project_name: Optional[str] = None
+    description: Optional[str] = None
+    technologies_used:  Optional[str] = None
 
 class CertificationSchema(BaseModel):
-    certification_name: str
-    issued_by: str
-    issued_date: str
+    certification_name: Optional[str] = None
+    issued_by:  Optional[str] = None
+    issued_date:  Optional[str] = None
 
 class CandidateProfileSchema(BaseModel):
     gender: str
@@ -203,14 +203,14 @@ class CandidateProfileSchema(BaseModel):
     city: str
     job_domain_function: str
     job_sub_role: str
-    experience: float
+    experience: Optional[float] = None
     total_experience_years: int
-    total_experience_months: int
-    current_company_name: str
-    current_job_title: str
-    joining_date: str
-    current_ctc: float
-    expected_ctc: float
+    #total_experience_months: int
+    current_company_name: Optional[str] = None
+    current_job_title: Optional[str] = None
+    joining_date:Optional[str] = None
+    current_ctc: Optional[float] = None
+    expected_ctc: Optional[float] = None
     job_profile: str = None
     notice_period: str = None
     educations: list[EducationSchema]

@@ -87,8 +87,7 @@ def get_all_job_postings(db: Session = Depends(get_db)):
     try:
         job_postings = (
             db.query(JobPostingTable)
-            .options(joinedload(JobPostingTable.user))  
-            .filter(JobPostingTable.is_published == True)  
+            .options(joinedload(JobPostingTable.user))    
             .all()
         )
         data = [
@@ -163,7 +162,7 @@ def get_all_published_job_postings(db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"Failed to retrieve job postings: {str(e)}")
 
 
-@router.get("/job_postings/{job_id}", response_model=None, dependencies=[Depends(JWTBearer()), Depends(get_admin_or_hr)])
+@router.get("/job_postings/{job_id}", response_model=None)
 def get_job_posting(job_id: int, db: Session = Depends(get_db)):
     job_posting = db.query(JobPostingTable).filter(JobPostingTable.id == job_id).first()
     if not job_posting:
