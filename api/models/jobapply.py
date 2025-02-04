@@ -16,15 +16,15 @@ class CandidateProfile(Base):
     city = Column(String(255), nullable=False)
 
     # Industry
-    job_domain_function = Column(String(255), nullable=False)
-    job_sub_role = Column(String(255), nullable=False)
+    job_domain_function = Column(String(255), nullable=True)
+    job_sub_role = Column(String(255), nullable=True)
     experience = Column(Float, nullable=True)
 
     # Employment
     total_experience_years = Column(Integer, nullable=False)
     #total_experience_months = Column(Integer, nullable=False)
-    current_company_name = Column(String(255), nullable=False)
-    current_job_title = Column(String(255), nullable=False)
+    current_company_name = Column(String(255), nullable=True)
+    current_job_title = Column(String(255), nullable=True)
     joining_date = Column(Date, nullable=True)
     current_ctc = Column(Float, nullable=True)
     expected_ctc = Column(Float, nullable=True)
@@ -57,7 +57,7 @@ class Project(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     candidate_id = Column(Integer, ForeignKey("candidate_profiles_tb.user_id"), nullable=False)  
-    project_name = Column(String(255), nullable=False)
+    project_name = Column(String(255), nullable=True)
     description = Column(String(255), nullable=True)
     technologies_used = Column(String(255), nullable=True)
 
@@ -68,9 +68,9 @@ class Certification(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     candidate_id = Column(Integer, ForeignKey("candidate_profiles_tb.candidate_id"))  
-    certification_name = Column(String(255), nullable=False)
-    issued_by = Column(String(255), nullable=False)
-    issued_date = Column(Date, nullable=False)
+    certification_name = Column(String(255), nullable=True)
+    issued_by = Column(String(255), nullable=True)
+    issued_date = Column(Date, nullable=True)
 
     candidate_profile = relationship("CandidateProfile", back_populates="certifications")
 
@@ -79,8 +79,8 @@ class JobDetail(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     candidate_id = Column(Integer, ForeignKey("candidate_profiles_tb.user_id"), nullable=False)  
-    job_title = Column(String(255), nullable=False)
-    company_name = Column(String(255), nullable=False)
+    job_title = Column(String(255), nullable=True)
+    company_name = Column(String(255), nullable=True)
     job_duration_from = Column(Date, nullable=True)  
     job_duration_to = Column(Date, nullable=True)  
     job_skills = Column(Text, nullable=True)  

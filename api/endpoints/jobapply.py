@@ -111,19 +111,19 @@ def create_candidate_profile(
 @router.get("/candidate_profiles/{candidate_id}", response_model=None)
 def get_candidate_profile(candidate_id: int, db: Session = Depends(get_db)):
     try:
-        candidate_profile = db.query(CandidateProfile).filter(CandidateProfile.candidate_id == candidate_id).\
+        candidate_profile = db.query(CandidateProfile).filter(CandidateProfile.user_id == candidate_id).\
             options(joinedload(CandidateProfile.user)).first()
 
         if not candidate_profile:
             raise HTTPException(status_code=404, detail="Candidate profile not found")
 
-        educations = db.query(Education).filter(Education.candidate_id == candidate_id).all()
+        educations = db.query(Education).filter(Education.candidate_id == candidate_profile.candidate_id).all()
         
-        projects = db.query(Project).filter(Project.candidate_id == candidate_id).all()
+        projects = db.query(Project).filter(Project.candidate_id == candidate_profile.candidate_id).all()
 
-        certifications = db.query(Certification).filter(Certification.candidate_id == candidate_id).all()
+        certifications = db.query(Certification).filter(Certification.candidate_id == candidate_profile.candidate_id).all()
 
-        job_details = db.query(JobDetail).filter(JobDetail.candidate_id == candidate_id).all()
+        job_details = db.query(JobDetail).filter(JobDetail.candidate_id == candidate_profile.candidate_id).all()
 
         user_name = candidate_profile.user.user_name if candidate_profile.user else None
 
