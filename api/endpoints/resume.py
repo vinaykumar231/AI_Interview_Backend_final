@@ -338,6 +338,7 @@ async def send_resume_selection_email(
     #resume_ids_list = resume_ids.split(',') 
     send_to_list = send_to.split(',')        
     results = {}
+    current_date = datetime.now().strftime("%d-%m-%y")
 
     for email in send_to_list:
         candidate_email = email.strip() 
@@ -374,18 +375,23 @@ async def send_resume_selection_email(
 
         # Prepare email body with candidate information
         email_body_selected = f"""
+            <p>Subject: Interview Invitation for {resume_analysis.job_title} Position at MaitriAI</p>
             <p>Dear {resume_analysis.candidate_name},</p>
-             <p>Congratulations! Your resume for the position of <strong>{resume_analysis.job_title}</strong> at <strong>{resume_analysis.user.company_name}</strong> has been selected for the next round of the interview process. 
+             <p>Congratulations! We are pleased to inform you that your resume has been shortlisted for the <strong>{resume_analysis.job_title}</strong> position at <strong>{resume_analysis.user.company_name}</strong> has been selected for the next round of the interview process. 
              </p>
-             <p>Please click on the link below to schedule your interview:</p>
-            <a href="https://ai-interviewer-theta.vercel.app/candidate_interview">Interview link</a>
+             <p>As the next step, we invite you to schedule your first-round interview by clicking on the link below:</p>
+            <p><strong>Interview Date:</strong> {current_date}</p>
+            <p><a href='https://api.maitriai.com/ai_hr/candidate_interview'>Interview Link</a></p>
             <br>
-            <p><strong>Disclaimer:</strong> This email is confidential. If you are not the intended recipient, please let the sender know and delete this email.</p>
+            <p>If you have any questions or require further assistance, feel free to reach out.</p>
+            <br>
+            <p><strong>Disclaimer:</strong> This email and its contents are confidential. If you are not the intended recipient, please notify the sender and delete this email immediately.</p>
             <br>
             <p>Best regards,</p>
-            <p>Vinay Kumar</p>
+            <p>HR Team</p>
             <p>MaitriAI</p>
-            <p>900417181</p>
+            <p>📧 contact@maitriai.com</p>
+            <p>📞 +91 9004175207 / 9167476466</p>
         """
 
         results[candidate_email] = {"status": "Emails sent", "recipients": []}
@@ -396,7 +402,7 @@ async def send_resume_selection_email(
             if recipient:  
                 try:
                     await send_email(
-                        subject="Resume Selection Notification",
+                        subject="Interview Invitation at MaitriAI",
                         email_to=recipient,
                         body=email_body_selected
                     )
