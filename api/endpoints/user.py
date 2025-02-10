@@ -15,6 +15,7 @@ import random
 import pytz
 from ..models.company import Companies
 from sqlalchemy.orm import joinedload
+from sqlalchemy.exc import SQLAlchemyError
 
 router = APIRouter()
 
@@ -80,6 +81,8 @@ def AI_Interviewer_register(data: UserCreate, db: Session = Depends(get_db)):
 
         response = api_response(200, message="User Created successfully")
         return response
+    except HTTPException as http_exc:
+        raise http_exc
 
     except Exception as e:
         db.rollback()
@@ -106,6 +109,10 @@ def AI_Interviewer_register(
         utc_now = pytz.utc.localize(datetime.utcnow())
         ist_now = utc_now.astimezone(pytz.timezone('Asia/Kolkata'))
 
+        user_email_exist= db.query(AI_Interviewer).filter(AI_Interviewer.user_email==user_email).first()
+        if user_email_exist:
+            raise HTTPException(status_code=400, detail=" User Email already exist in database")
+
         hashed_password = bcrypt.hashpw(user_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
         usr = AI_Interviewer(
@@ -122,10 +129,14 @@ def AI_Interviewer_register(
 
         response = api_response(200, message="User Created successfully")
         return response
-
-    except:
+    except HTTPException as http_exc:
+        raise http_exc
+    except SQLAlchemyError:
         db.rollback()
-        raise HTTPException(status_code=404, detail=f"Failed to register")
+        raise HTTPException(status_code=500, detail="A database error occurred while register.")
+    except Exception:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="An unexpected error occurred  while register.")
 
 @router.get("/get_all_users/", dependencies=[Depends(JWTBearer()), Depends(get_admin)])
 def get_current_user_details( db: Session = Depends(get_db)):

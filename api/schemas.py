@@ -179,6 +179,10 @@ class JobDetailSchema(BaseModel):
     job_skills: Optional[str] = None
     job_summary: Optional[str] = None
 
+    @validator("job_duration_from", "job_duration_to", pre=True)
+    def validate_date(cls, value):
+        return None if value == "" else value
+
 class EducationSchema(BaseModel):
     degree: str
     field_of_study: str
@@ -201,22 +205,30 @@ class CandidateProfileSchema(BaseModel):
     country: str
     province_state: str
     city: str
-    job_domain_function: str
-    job_sub_role: str
+    job_domain_function:  Optional[str] = None
+    job_sub_role: Optional[str] = None
     experience: Optional[float] = None
-    total_experience_years: int
+    total_experience_years: Optional[int] = None
     #total_experience_months: int
     current_company_name: Optional[str] = None
     current_job_title: Optional[str] = None
-    joining_date:Optional[str] = None
+    joining_date:Optional[date] = None
     current_ctc: Optional[float] = None
     expected_ctc: Optional[float] = None
-    job_profile: str = None
-    notice_period: str = None
+    job_profile:  Optional[str] = None
+    notice_period:  Optional[str] = None
     educations: list[EducationSchema]
     projects: list[ProjectSchema]
     certifications: list[CertificationSchema]
     job_details: List[JobDetailSchema]
+
+    @validator("experience", "current_ctc", "expected_ctc", pre=True)
+    def validate_float(cls, value):
+        return None if value == "" else value
+
+    @validator("joining_date", "date_of_birth", pre=True)
+    def validate_date_fields(cls, value):
+        return None if value == "" else value
 
     class Config:
         orm_mode = True

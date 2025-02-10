@@ -11,7 +11,7 @@ from sqlalchemy.orm import joinedload
 
 router = APIRouter()
 
-@router.post("/candidate_profiles/", response_model=None)
+@router.post("/candidate_profiles", response_model=None)
 def create_candidate_profile(
     profile_data: CandidateProfileSchema,
     db: Session = Depends(get_db),
@@ -70,7 +70,7 @@ def create_candidate_profile(
 
         for cert in profile_data.certifications:
             new_certification = Certification(
-                candidate_id=new_profile.candidate_id,
+                candidate_id=new_profile.user_id,
                 certification_name=cert.certification_name,
                 issued_by=cert.issued_by,
                 issued_date=cert.issued_date,
@@ -100,12 +100,12 @@ def create_candidate_profile(
     except SQLAlchemyError as e:
         db.rollback()
         raise HTTPException(
-            status_code=500, detail="A database error occurred while creating the candidate profile."
+            status_code=500, detail= f"A database error occurred while creating the candidate profile.{e}"
         )
     except Exception as e:
         db.rollback()
         raise HTTPException(
-            status_code=500, detail="An unexpected error occurred while creating the candidate profile.")
+            status_code=500, detail=f"An unexpected error occurred while creating the candidate profile.{e}")
     
 @router.get("/candidate_profiles/{candidate_id}", response_model=None)
 def get_candidate_profile(candidate_id: int, db: Session = Depends(get_db)):

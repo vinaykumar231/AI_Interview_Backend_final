@@ -21,7 +21,7 @@ class CandidateProfile(Base):
     experience = Column(Float, nullable=True)
 
     # Employment
-    total_experience_years = Column(Integer, nullable=False)
+    total_experience_years = Column(Integer, nullable=True)
     #total_experience_months = Column(Integer, nullable=False)
     current_company_name = Column(String(255), nullable=True)
     current_job_title = Column(String(255), nullable=True)
@@ -64,10 +64,10 @@ class Project(Base):
     candidate_profile = relationship("CandidateProfile", back_populates="projects")
 
 class Certification(Base):
-    __tablename__ = "certifications_tb"
+    __tablename__ = "certifications_tb4"
 
     id = Column(Integer, primary_key=True, index=True)
-    candidate_id = Column(Integer, ForeignKey("candidate_profiles_tb.candidate_id"))  
+    candidate_id = Column(Integer, ForeignKey("candidate_profiles_tb.user_id"), nullable=False)  
     certification_name = Column(String(255), nullable=True)
     issued_by = Column(String(255), nullable=True)
     issued_date = Column(Date, nullable=True)
