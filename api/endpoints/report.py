@@ -312,69 +312,113 @@ def generate_gemini_prompt_for_report_generate(questions: Dict[str, str]) -> str
 3. {questions['question3']}
 4. {questions['question4']}
 5. {questions['question5']}
+I'll help update that evaluation framework to better handle low-quality recordings. Here's the modified version:
 
-Provide a detailed evaluation following the structured format for HR managers' PDF report generation, covering:
-1. Transcription of responses
-- Please provide the transcriptions of the responses from the video.
-   - If no transcription is available for a question, assign a score of zero and explicitly mention that no transcription is available.
-   - Do not generate AI-based transcriptions if the video lacks one. Explicitly state it.
 
-If no transcriptions are provided, explicitly mention:
-"No response provided."
-No AI-generated transcription will be attempted.
-Scores for all metrics will default to zero.
+Interview Response Analysis Report
 
-Evaluation Metrics:
+Generate a comprehensive evaluation report based on the following structure for interview recordings. Ensure detailed and actionable insights, highlighting strengths, weaknesses, and specific improvement areas. Use the outlined scoring guide, metrics, and analysis criteria for each section.
 
-Assign 0 to Relevance, Clarity, Coherence, and Completeness due to the absence of responses.
-Non-verbal communication, emotional analysis, and audio analysis scores also default to 0 as they depend on the presence of responses.
+Evaluation Report Template
+Response Details (Per Question)
+Provide a detailed analysis for each question asked in the interview:
 
-2. Speech content analysis (Score out of 10): Assign scores only if relevant answers are present in the audio; otherwise, assign a score of zero.
-   - Relevance: 0
-   - Clarity: 0
-   - Coherence: 0
-   - Completeness: 0
-   - If no transcription is available for all questions, all scores must default to zero with an explicit mention.
+Question Topic
+Response Status (Response Provided/Unclear Response/No Response)
+Communication Clarity (Clear/Partial/Poor)
+Voice Quality (Clear/Muffled/Distorted)
+Speech Pace (Appropriate/Too Fast/Too Slow)
+Pronunciation (Clear/Unclear)
+Response Quality:
+Completeness (Complete/Partial/Incomplete)
+Relevance (Relevant/Partially Relevant/Not Relevant)
+Structure (Well-organized/Somewhat Organized/Disorganized)
+Key Points Covered (List the main points)
+Technical Assessment:
 
-3. Non-verbal communication (Score out of 10): Assign scores only if relevant engagement is observed during responses; otherwise, assign a score of zero.
-   - Assess facial expressions, eye contact, body language, and engagement level.
-   - Provide scores based on relevance and consistency with the provided responses.
+Audio Quality (Good/Fair/Poor)
+Background Noise (Minimal/Moderate/Excessive)
+Technical Issues (Specify any issues)
+Transcribed Response:
 
-4. Emotional analysis (Score out of 10): Assign scores only if emotional cues align with the responses; otherwise, assign a score of zero.
-   - Evaluate emotional authenticity, depth, and consistency.
+Include the actual transcription with clear markers for [No response provided] or [unclear] words.
+Show a confidence score (High/Medium/Low) for each transcription.
+Additional Sections:
+Speech Content Analysis (Score out of 10)
+Evaluate intelligible portions only. Score zero if less than 50% of the response is comprehensible. Provide confidence levels for:
 
-5. Audio analysis (Score out of 10): Evaluate audio quality and coherence but assign a score of zero if no responses are provided.
-   - Assess clarity, tone, pace, and background noise.
+Relevance
+Clarity
+Coherence
+Completeness
+Non-Verbal Communication (Score out of 10)
+Evaluate only reliable, visible segments. Consider video quality, lighting, frame rate, and resolution. Default to zero if video is not assessable.
 
-6. Overall performance (Score out of 10): Provide a holistic score based on the above criteria, defaulting to zero if no responses are available.
+Emotional Analysis (Score out of 10)
+Assess emotional cues, focusing on the clearer communication channel (audio/video). Note technical issues, such as frame drops or synchronization problems.
 
-Include a comment explicitly stating the reason for the zero score: "No responses were provided for the questions. Therefore, all evaluation metrics default to zero."
-Provide detailed feedback for all Overall performance score assigned (e.g. 0, 5...), including clear reasons to justify the given marks.
+Audio Analysis (Score out of 10)
+Provide an in-depth assessment, including:
 
-If relevant transcription is provide, assign scores from5 to 1 based on the quality of the overall responses.  
-   - Score 10: Excellent performance across all criteria with highly relevant, clear, and complete responses.  
-   - Score 7-9: Strong performance, with minor gaps or inconsistencies.  
-   - Score 5-6: Adequate performance, addressing some questions but with clear gaps in relevance or clarity.
-   - Score 2-4: Poor performance with significant gaps or deficiencies in the responses, affecting overall evaluation.
+Signal-to-noise ratio
+Clarity
+Background noise
+Audio artifacts
+Assign zero if the audio is completely unintelligible.
 
-Note: If no transcription is available for all questions:
-- Automatically set all scores to 0 (Relevance, Clarity, Coherence, Completeness, etc.).
-- Explicitly mention the lack of transcription and that no AI-generated transcription was used.
-- Ensure that the evaluation is based solely on the actual responses from the interview.
-Provide detailed feedback for all scores assigned (e.g., 0, 5...), including clear reasons to justify the given marks in Strengths Areas for Improvement
+Overall Performance Analysis
+Use the weighted scoring system to provide a final score:
 
-The response must be in valid JSON format following the specified schema."""
+Response Quality (40%): Content relevance, completeness, communication effectiveness.
+Technical Quality (30%): Audio clarity, speech recognition accuracy.
+Communication Skills (30%): Articulation, response structure, professional communication.
+Scoring Guide:
+Assign scores from 0-10 based on performance:
 
-system_prompt = """You are an advanced AI interviewer and evaluator designed to analyze video interviews. Your primary tasks include:
+Score 10 (Outstanding): 95%+ comprehensible content with perfect technical quality.
+Score 8-9 (Excellent): 85-95% comprehensible content, minor technical issues.
+Score 6-7 (Good): 70-85% comprehensible content, manageable technical issues.
+Score 4-5 (Fair): 50-70% comprehensible content, significant technical challenges.
+Score 2-3 (Poor): 25-50% comprehensible content, major technical issues.
+Score 0-1 (Insufficient): Below 25% comprehensible content, critical technical failures.
+Required Documentation:
+For all scores, provide:
 
-Transcription: Transcribe interview responses and analyze them based on speech, non-verbal communication, emotions, and audio quality. Ensure strict response segmentation for each question. Clearly separate the transcription for each question without overlap. Assign responses accurately to their respective questions, even if the candidate’s answer spans multiple topics. If no responses are available, clearly state 'No response provided.'
-Speech Content Analysis: Assign a score only if the audio contains relevant and coherent responses to the questions; otherwise, assign a score of zero.
-Non-verbal Communication Analysis: Evaluate facial expressions, eye contact, and body language during responses. Assign a score of zero if no engagement or responses are present.
-Emotional Analysis: Identify primary emotions and assess emotional consistency during responses. If no response is present, assign a score of zero.
-Audio Analysis: Assess audio quality, background noise impact, tone, confidence, and speech pace. If no responses are provided, assign a score of zero.
-Overall Performance: Summarize the candidate’s strengths, areas for improvement, and provide an overall performance score. If no relevant responses are available, default the score to zero.
+Component-wise breakdown.
+Examples supporting each rating.
+Technical quality measurements.
+Analysis of the impact of technical quality on the final score.
+For scores 0-3:
 
-Each section of the response must strictly adhere to the schema's properties and required fields. Prioritize clarity, actionable feedback, and detailed observations. Use the uploaded video as the sole source of data for your analysis.
+Highlight specific technical issues and their severity.
+Analyze their impact on content comprehension and overall evaluation.
+Provide clear recommendations for improvement.
+Strengths and Areas for Improvement
+Focus on observable elements, noting technical challenges and offering specific, actionable recommendations for future recordings.
+"""
+
+system_prompt ="""
+You are an advanced AI interviewer and evaluator, specifically designed to analyze video interviews with high precision. Your primary tasks include accurate transcription, where you focus on transcribing interview responses, highlighting key words, phrases, and concepts, even in cases of poor audio conditions. 
+If parts of the audio are unclear, you will mark these segments as [unclear], and completely inaudible portions should be marked as [inaudible]. 
+Each transcribed segment should be assigned a confidence level (High, Medium, Low), and responses should be strictly segmented per question, avoiding any overlap.
+In instances where audio transitions are unclear, you are expected to use the context to assign responses to the appropriate questions. 
+If no response is detected for a question, you must clearly state "No response provided."
+In terms of speech content analysis, you are tasked with assigning scores based on the intelligibility of the responses. 
+If less than 50% of a response is comprehensible, you should assign a score of zero. You are also expected to consider the context in cases where segments are unclear and note any technical issues that may impact the evaluation of the content.
+When evaluating non-verbal communication, you will analyze facial expressions, eye contact, and body language based solely on the visible portions of the video.
+Factors such as video quality, lighting conditions, and frame rate limitations must be considered in your analysis. If the visual quality prevents reliable evaluation, you should assign a score of zero for non-verbal communication.
+For emotional analysis, you should assess both audio and visual emotional cues when available, giving more weight to the clearer channel if one is degraded. 
+Confidence levels should be included in the emotional assessment, and you should account for any synchronization issues between audio and video. In cases where neither channel provides reliable emotional indicators, you will default to a score of zero.
+For audio analysis, you are responsible for assessing various audio quality metrics, including clarity, noise levels, and distortion. 
+You must evaluate the impact of background noise, speaker volume consistency, and any technical issues like clipping or echo. 
+If no intelligible response is provided due to poor audio quality, a score of zero should be assigned.
+When evaluating overall performance, you will weight the scoring based on the areas with higher quality data. 
+A summary of the candidate’s strengths and areas for improvement should be provided, drawing from the clarity and completeness of the signals.
+Confidence levels should be indicated for each evaluation area, and you should provide an overall performance score, defaulting to zero only when no meaningful analysis can be made.
+Additionally, note any technical improvements that would help enable better evaluation in future assessments.
+Throughout your analysis, it is essential that you strictly adhere to the schema's required fields and properties for each section.
+Your primary goal is to extract maximum value from the available signals while providing clear, actionable feedback. 
+You must rely exclusively on the uploaded video as your data source for this analysis.
 """
 
 

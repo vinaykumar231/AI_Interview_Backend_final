@@ -119,6 +119,49 @@ def get_all_job_postings(db: Session = Depends(get_db)):
         return data
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to retrieve job postings: {str(e)}")
+    
+@router.get("/get_all_job_postings_by_hr_id/", response_model=None, dependencies=[Depends(JWTBearer()), Depends(get_admin_or_hr)])
+def get_all_job_postings(hr_id: int = None, db: Session = Depends(get_db)):
+    try:
+        query = db.query(JobPostingTable).options(joinedload(JobPostingTable.user))
+        
+        # Filter by hr_id if provided
+        if hr_id is not None:
+            query = query.filter(JobPostingTable.hr_id == hr_id)
+        
+        job_postings = query.all()
+
+        data = [
+            {
+                "id": job_posting.id,
+                "hr_id": job_posting.hr_id,
+                "hr_name": job_posting.user.user_name if job_posting.user else None,
+                "job_title": job_posting.job_title,
+                "job_description": job_posting.job_description,
+                "company_name": job_posting.company_name,
+                "department": job_posting.department,
+                "location": job_posting.location,
+                "job_type": job_posting.job_type.value if job_posting.job_type else None,
+                "experience_required": job_posting.experience_required,
+                "employment_type": job_posting.employment_type.value if job_posting.employment_type else None,
+                "requirements": job_posting.requirements,
+                "responsibilities": job_posting.responsibilities,
+                "salary_range": job_posting.salary_range,
+                "benefits": job_posting.benefits,
+                "application_deadline": job_posting.application_deadline,
+                "status": job_posting.status.value if job_posting.status else None,
+                "is_published": job_posting.is_published,
+                "created_on": job_posting.created_on,
+                "updated_on": job_posting.updated_on,
+            }
+            for job_posting in job_postings
+        ]
+
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve job postings: {str(e)}")
+
+
 
 
 @router.get("/get_all_published_job_postings/", response_model=None, dependencies=[Depends(JWTBearer()), Depends(get_admin_or_hr)])

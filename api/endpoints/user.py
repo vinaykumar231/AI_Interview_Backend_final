@@ -50,7 +50,7 @@ def AI_Interviewer_register(data: UserCreate, db: Session = Depends(get_db)):
             raise HTTPException(status_code=400, detail="Password must be at least 8 characters long")
 
         if not AI_Interviewer.validate_phone_number(data.phone_no):
-            raise HTTPException(status_code=400, detail="Invalid phone number")
+            raise HTTPException(status_code=400, detail="Phone Number must be  10 digit")
 
         utc_now = pytz.utc.localize(datetime.utcnow())
         ist_now = utc_now.astimezone(pytz.timezone('Asia/Kolkata'))

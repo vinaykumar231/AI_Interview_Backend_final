@@ -32,4 +32,4 @@ app.include_router(apply_resume_analysis_router, prefix="/api", tags=["apply res
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", port=8000, reload= True, host="0.0.0.0")
+    uvicorn.run("main:app", port=8001, reload= True, host="0.0.0.0")
