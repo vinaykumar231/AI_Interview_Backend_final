@@ -212,7 +212,7 @@ def get_job_posting(job_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Job posting not found")
     return job_posting
 
-@router.patch("/job_postings/{job_id}", response_model=None, dependencies=[Depends(JWTBearer()), Depends(get_admin_or_hr)])
+@router.put("/job_postings/{job_id}", response_model=None, dependencies=[Depends(JWTBearer()), Depends(get_admin_or_hr)])
 def update_job_posting(job_id: int, job_posting: JobPostingCreate, db: Session = Depends(get_db), current_user: AI_Interviewer = Depends(get_current_user)):
     existing_job_posting = db.query(JobPostingTable).filter(JobPostingTable.id == job_id).first()
     if not existing_job_posting:
