@@ -34,7 +34,7 @@ def create_company(company: CompanyCreate, db: Session = Depends(get_db)):
 def get_companies(db: Session = Depends(get_db)):
     return db.query(Business_message).all()
 
-@router.put("/verify_material/{message_id}")
+@router.put("/verify_company_details/{message_id}")
 async def verify_material(message_id: int, db: Session = Depends(get_db)):
     try:
         message = db.query(Business_message).filter(Business_message.id == message_id).first()

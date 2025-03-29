@@ -25,7 +25,7 @@ class UserType(str, Enum):
     admin = "admin"
     HR = "HR"
     user = "user"
-    Students="students"
+    candidate ="candidate"
    
 
 
@@ -129,6 +129,8 @@ class CompanyBase(BaseModel):
     phone_number: str | None = None
     company_website: str | None = None
     company_size: str
+    Industry:Optional[str] = None
+    company_location:Optional[str] = None
     company_description: str
 
 class CompanyCreate(CompanyBase):
@@ -232,6 +234,18 @@ class CandidateProfileSchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+##################### Razorpay ########################
+
+class CreateOrderRequest(BaseModel):
+    amount: float
+    currency: str = "INR"
+    receipt: str
+
+class VerifyPaymentRequest(BaseModel):
+    razorpay_payment_id: str
+    razorpay_order_id: str
+    razorpay_signature: str
 
 
     

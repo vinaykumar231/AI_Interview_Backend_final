@@ -41,7 +41,7 @@ async def AI_Interviewers(credential: LoginInput):
 
 
 @router.post("/insert/ai_Interviewer_register/", dependencies=[Depends(JWTBearer()), Depends(get_admin)])
-def AI_Interviewer_register(data: UserCreate, db: Session = Depends(get_db)):
+async  def AI_Interviewer_register(data: UserCreate, db: Session = Depends(get_db)):
     try:
         if not AI_Interviewer.validate_email(data.user_email):
             raise HTTPException(status_code=400, detail="Invalid email format")
@@ -56,6 +56,10 @@ def AI_Interviewer_register(data: UserCreate, db: Session = Depends(get_db)):
         ist_now = utc_now.astimezone(pytz.timezone('Asia/Kolkata'))
 
         hashed_password = bcrypt.hashpw(data.user_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+        use_db=db.query(AI_Interviewer).filter(AI_Interviewer.user_email==data.user_email).first()
+        if use_db:
+            raise HTTPException(status_code= 400, detail=f"{data.user_email} already this email exist in database")
 
         usr = AI_Interviewer(
             user_name=data.user_name,
@@ -79,6 +83,35 @@ def AI_Interviewer_register(data: UserCreate, db: Session = Depends(get_db)):
         db.add(company_db)
         db.commit()
 
+        # Send Registration Email
+        body = f"""
+        <h3>HR Account Registration Successful</h3>
+        <p>Dear <b>{data.user_name}</b>,</p>
+        <p>Your HR account has been successfully registered on Maitri AI-Interviewer.</p>
+        <p>Below are your login credentials:</p>
+        <ul>
+            <li><b>Username:</b> {data.user_email}</li>
+            <li><b>Password:</b> {data.phone_no}</li>
+        </ul>
+        <p>Please use these credentials to log in to your HR portal.</p>
+        <p>For security reasons, we recommend changing your password after the first login.</p>
+        <br>
+        <p>Thank you!</p>
+        <p>Best regards,</p>
+        <p>Vinay Kumar</p>
+        <p>MaitriAI</p>
+        <p>900417181</p>
+        """
+
+        try:
+            await send_email( 
+                subject="HR Account Registration Successful - Your Login Credentials",
+                email_to=data.user_email,  
+                body=body
+            )
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
+
         response = api_response(200, message="User Created successfully")
         return response
     except HTTPException as http_exc:
@@ -86,14 +119,14 @@ def AI_Interviewer_register(data: UserCreate, db: Session = Depends(get_db)):
 
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=404, detail=f"filed to hr Register")
+        raise HTTPException(status_code=404, detail=f"failed to HR Register")
 
-@router.post("/insert/student_level_register/")
+@router.post("/insert/candidate_register/")
 def AI_Interviewer_register(
             user_name: str = Form(None),
             user_email: str = Form(None),
             user_password: str = Form(...),
-            user_type: str = UserType.Students,
+            user_type: str = UserType.candidate,
             phone_no: str = Form(...),
             db: Session = Depends(get_db)):
     try:

@@ -14,6 +14,8 @@ class Business_message(Base):
     phone_number = Column(String(20))
     company_website = Column(String(255))
     company_size = Column(String(50))
+    Industry = Column(String(100), nullable=True)
+    company_location = Column(String(255), nullable=True)
     company_description = Column(Text)
     is_checked = Column(Boolean, default=False)  
     status = Column(String(10), default='unchecked')  

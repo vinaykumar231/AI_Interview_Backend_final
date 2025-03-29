@@ -2,8 +2,9 @@ from .user import router as user_router
 from .resume import router as resume_router
 from .report import router as report_router
 from .jobposting import router as jobposting_router
-from .student_level.resume_upload import router as student_resume_upload_router
-from .student_level.student_report import router as student_report_router
+from .candidate_level.resume_upload import router as candidate_resume_upload_router
+from .candidate_level.candidate_report import router as candidate_report_router
 from .admin_level.Business_Message import router as Business_Message_router
 from .jobapply import router as jobapply_router
 from .apply_resume_analysis import router as apply_resume_analysis_router
+from .Razorpay_gatway import router as razorpay_paymnet_router

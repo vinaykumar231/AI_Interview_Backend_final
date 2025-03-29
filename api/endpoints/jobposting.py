@@ -83,11 +83,11 @@ async def published_job_post(job_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"Failed to verify material: {str(e)}")
 
 @router.get("/get_all_job_postings/", response_model=None, dependencies=[Depends(JWTBearer()), Depends(get_admin_or_hr)])
-def get_all_job_postings(db: Session = Depends(get_db)):
+def get_all_job_postings(db: Session = Depends(get_db), current_user: AI_Interviewer = Depends(get_current_user)):
     try:
         job_postings = (
             db.query(JobPostingTable)
-            .options(joinedload(JobPostingTable.user))    
+            .options(joinedload(JobPostingTable.user)).filter(JobPostingTable.hr_id==current_user.user_id)    
             .all()
         )
         data = [
@@ -121,9 +121,9 @@ def get_all_job_postings(db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"Failed to retrieve job postings: {str(e)}")
     
 @router.get("/get_all_job_postings_by_hr_id/", response_model=None, dependencies=[Depends(JWTBearer()), Depends(get_admin_or_hr)])
-def get_all_job_postings(hr_id: int = None, db: Session = Depends(get_db)):
+def get_all_job_postings(hr_id: int = None, db: Session = Depends(get_db), current_user: AI_Interviewer = Depends(get_current_user)):
     try:
-        query = db.query(JobPostingTable).options(joinedload(JobPostingTable.user))
+        query = db.query(JobPostingTable).options(joinedload(JobPostingTable.user)).filter(JobPostingTable.hr_id==current_user.user_id).first()
         
         # Filter by hr_id if provided
         if hr_id is not None:
@@ -165,12 +165,12 @@ def get_all_job_postings(hr_id: int = None, db: Session = Depends(get_db)):
 
 
 @router.get("/get_all_published_job_postings/", response_model=None, dependencies=[Depends(JWTBearer()), Depends(get_admin_or_hr)])
-def get_all_published_job_postings(db: Session = Depends(get_db)):
+def get_all_published_job_postings(db: Session = Depends(get_db),  current_user: AI_Interviewer = Depends(get_current_user)):
     try:
         job_postings = (
         db.query(JobPostingTable)
         .options(joinedload(JobPostingTable.user))  
-        .filter(JobPostingTable.is_published == True)  
+        .filter(JobPostingTable.is_published == True, JobPostingTable.hr_id==current_user.user_id)  
         .all()
     )
         
